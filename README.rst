@@ -11,7 +11,7 @@ Our dependencies:
 
 - ``clean-css``: For CSS minification
 - ``nunjucks``: For templates (stored as submodule)
-- ``less``: For stylesheets
+- ``stylus``: For stylesheets
 - ``uglify-js``: For JS minification and L10n string extraction
 
 If you plan on doing compilation (i.e.: you're Wil Clouser), you'll also need
@@ -57,7 +57,7 @@ To control the hostname and port you can use the following otions ::
 
     node damper.js --host 127.0.0.1 --port 8888
 
-In addition to an HTTP server, the damper will also run a LESS watcher (to
+In addition to an HTTP server, the damper will also run a Stylus watcher (to
 recompile CSS as it's edited) and a template watcher (to recompile templates
 as they're edited).
 
@@ -117,7 +117,7 @@ The API
 Bugs
 ----
 
-- If new templates or ``.less`` files are added, they will not be recognized
+- If new templates or ``.styl`` files are added, they will not be recognized
   until the damper is restarted. Deleted files may also cause problems.
 
 

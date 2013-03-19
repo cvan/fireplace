@@ -4,6 +4,7 @@
 *.po
 *.po.js
 *.pyc
+*.styl.css
 *.swp
 *~
 .#*
@@ -23,5 +24,6 @@ build
 dist
 hearth/templates.js
 node_modules
+npm-debug.log
 settings_local.js
 tags
