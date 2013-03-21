@@ -29,6 +29,7 @@ define(['l10n', 'utils', 'z'], function(l10n, utils, z) {
 
         builder.z('type', 'leaf');
         builder.z('title', gettext('Loading...'));
+        builder.z('classes', 'page-detail');
         builder.z('pagetitle', gettext('App Details'));
 
         builder.onload('app-data', function() {

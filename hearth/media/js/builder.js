@@ -218,7 +218,6 @@ define(
 
         var context = _.once(function() {return z.context = {};});
         this.z = function(key, val) {
-            context()[key] = val;
             switch (key) {
                 case 'title':
                     if (!val) {
@@ -231,7 +230,14 @@ define(
                 case 'type':
                     z.body.attr('data-page-type', val);
                     break;
+                case 'classes':
+                    console.log('BEFORE', context().classes);
+                    z.body.removeClass(z.context.classes);
+                    z.body.addClass(val);
+                    break;
             }
+            context()[key] = val;
+            console.log('AFTER', context().classes);
         };
     }
 

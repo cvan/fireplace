@@ -5,7 +5,7 @@ define('navigation',
     'use strict';
 
     var stack = [
-        {path: '/', type: 'root'}
+        {path: '/', type: 'root', classes: 'page-root'}
     ];
     var param_whitelist = ['q', 'sort', 'cat'];
     var last_bobj = null;
@@ -46,6 +46,7 @@ define('navigation',
     }
 
     function navigate(href, popped, state) {
+        console.log(href, popped, state);
         if (!state) return;
 
         var view = views.match(href);
@@ -56,6 +57,7 @@ define('navigation',
         last_bobj = views.build(view[0], view[1], state.params);
         state.type = z.context.type;
         state.title = z.context.title;
+        state.classes = z.context.classes;
 
         // Clean the path's parameters.
         // /foo/bar?foo=bar&q=blah -> /foo/bar?q=blah
@@ -82,6 +84,7 @@ define('navigation',
             if (popped && stack[0].path === state.path) {
                 stack.shift();
             } else {
+                console.log('unshifting!', state);
                 stack.unshift(state);
             }
 
