@@ -7,20 +7,18 @@
     <div id="site-search-suggestions" data-src=""></div>
     <input id="search-q" class="query-input" type="search" name="q" title=""
          autocomplete="off" placeholder="{{ z.context.search or _('Search') }}" required
+         {% if z.context.search %}data-context{% endif %}
          data-placeholder-default="{{ _('Search') }}">
     <a href="#" class="search-clear" title="{{ _('Clear') }}">{{ _('Clear') }}</a>
   </form>
   <span class="flex-span"></span>
-  <a href="#" class="expand-toggle" title="{{ _('Expand') }}"></a>
-  <a href="#" class="header-button filter">{{ _('Filter') }}</a>
   <div class="act-tray">
     <a href="{{ url('settings') }}" class="header-button icon settings" title="{{ _('Settings') }}"></a>
-    {# TODO: Make this responsive based on basta's logged-in classes. #}
     <div class="account-links only-logged-in">
       <ul>
         <li>
           <a href="{{ url('settings') }}">
-            <em>{{ user.get_setting('email') }}</em>
+            <b>{{ user.get_setting('email') }}</b>
             {{ _('Edit Account Settings') }}</a>
         </li>
         <li><a href="{{ url('purchases') }}">{{ _('My Apps') }}</a></li>
