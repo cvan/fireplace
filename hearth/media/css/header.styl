@@ -5,12 +5,12 @@
 
 // usable on any header
 .header {
-    gradient-two-color(#566773, #3e4e59);
-    box-shadow: 0 -1px 0 rgba(0,0,0,.15) inset, 0 0 3px 3px rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.1) inset;
+    box-shadow: 0 1px 3px 0 #888, inset 0 1px 0 0 $london-fog-gray;
+    display-flex();
+    gradient-two-color(#fff, #e1e1e1);
     height: 50px;
     max-height: 50px;
     width: 100%;
-    display-flex();
     > * {
         flex-center();
     }
@@ -92,58 +92,53 @@
     margin: 0 10px;
     transition(.3s all);
 }
+
 #search-q {
-    box-shadow: 0 1px 0 rgba(255,255,255,.1), 0 1px 0 rgba(0,0,0,.5) inset, 0 1px 1px rgba(0,0,0,.5) inset;
-    gradient-two-color-with-image(#21292f, #2a353c, url(../img/icons/magnifier.png), unquote('8px 8px'), no-repeat);
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: 0;
-    border-radius: 3px;
-    color: lighten(#99abb9, 2%);
+    background: #fff;
+    border: 1px solid #d5d5d5;
+    border-color: $cement-gray #d5d5d5 #e0e0e0;
+    border-radius: 10px;
+    color: $sailor-blue;
     font: 17px/30px $open-stack;
     height: 30px;
     outline: none;
-    padding: 0 30px 0 30px;
+    padding: 0 10px;
     z-index: 2;
-    width: 100%;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-
     &:focus {
-        box-shadow: 0 1px 1px rgba(0,0,0,0.06) inset, 0 0 8px rgba(80, 160, 220, 0.6);
-        color: $white;
+        border-color: $sailor-blue;
+        box-shadow: 0 0 8px $sailor-blue;
     }
     &:-moz-placeholder {
-        color: lighten(#99abb9, 3%);
+        color: $cement-gray;
     }
     &::-moz-placeholder {
-        color: lighten(#99abb9, 3%);
+        color: $cement-gray;
     }
     &::-webkit-input-placeholder {
-        color: lighten(#99abb9, 3%);
+        color: $cement-gray;
+    }
+    &:invalid ~ .search-clear {
+        display: none;
     }
 }
+
 .search-clear {
     hidetext();
     position: absolute;
-    height: 12px;
-    width: 11px;
-    background: url(../img/icons/clear.png) no-repeat;
-    top: 10px;
+    height: 18px;
+    width: 18px;
+    background: url(../img/pretty/close.png) 0 0 no-repeat;
+    top: 0;
     right: 10px;
 }
-input:invalid ~ .search-clear {
-    display: none;
-}
-
 
 // Buttons that appear in headers.
 .header-button {
+    color: $castle-skull-gray;
     display: block;
     width: 50px;
     height: 50px;
     line-height: 50px;
-    color: #fff;
     text-align: center;
     &:before {
         content: '';
@@ -178,9 +173,10 @@ input:invalid ~ .search-clear {
         display: block;
     }
     &.settings:after {
-        background-image: url(../img/icons/settings.png);
-        width: 24px;
-        height: 24px;
+        background-image: url(../img/pretty/gear.png);
+        background-size: 24px auto;
+        width: 30px;
+        height: 30px;
         margin: 12px;
     }
 
@@ -214,6 +210,7 @@ input:invalid ~ .search-clear {
             hidetext();
             spinner('install');
             outline: 0;
+            width: 50px;
             &:after {
                 display: none;
             }
@@ -287,12 +284,6 @@ input:invalid ~ .search-clear {
 
 // This probably shouldn't be media query based.
 @media (min-width: 1024px) {
-    .site-header {
-        box-shadow: 0 -1px 0 rgba(0,0,0,.5) inset, 0 1px 0 rgba(255,255,255,.1) inset;
-        background: darken(#3f4f5b, 5%) $grain-src;
-        background-size: 100px 100px;
-    }
-
     .header-button {
         &:before {
             content: none;
@@ -304,7 +295,8 @@ input:invalid ~ .search-clear {
                 background: none;
             }
             &:after {
-                margin: 12px 7px;
+                background-size: 30px auto;
+                margin: 11px 7px;
             }
         }
     }
@@ -331,30 +323,30 @@ input:invalid ~ .search-clear {
             &:after {
                 position: absolute;
                 z-index: 3;
-                background-position: 0 -24px;
+                background-position: 0 -30px;
             }
         }
     }
 
     .site-header {
-        height: 80px;
-        max-height: 80px;
+        height: 90px;
+        max-height: 90px;
         position: relative;
         > nav {
-            height: 80px;
-            max-width: $desktop-hdr;
+            height: 90px;
             margin: 0 auto;
+            max-width: 1024px;
         }
         .site {
             width: 280px;
             height: 60px;
         }
         .wordmark {
-            background: url(../img/logos/large.png) 0 50% no-repeat;
-            background-size: 280px auto;
-            width: 280px;
-            max-width: 280px;
+            background: url(../img/pretty/wordmark.png) 0 50% no-repeat;
+            background-size: 232px auto;
             height: 60px;
+            max-width: 232px;
+            width: 232px;
         }
         .persona {
             display: block;
@@ -386,26 +378,26 @@ input:invalid ~ .search-clear {
         padding-top: 0;
     }
 
-    .search-clear {
-        top: 8px;
+    .site-header .search,
+    #search-q {
+        width: 532px;
     }
 
     #search-q {
-        gradient-two-color-with-image(#21292f, #2a353c, url(../img/icons/search.png), unquote('8px 8px'), no-repeat);
-        font-size: 12px;
-        font-weight: 300;
-        height: 26px;
-        line-height: 23px;
-        padding: 1px 30px 0 25px;
-        &:-moz-placeholder {
-            color: lighten(#48535d, 25%);
+        font-size: 24px;
+        font-weight: 400;
+        height: 48px;
+        line-height: 48px;
+        padding: 5px 15px;
+        &:valid {
+            // Pad for the checkmark icon.
+            padding-right: 42px;
         }
-        &::-moz-placeholder {
-            color: lighten(#48535d, 25%);
-        }
-        &::-webkit-input-placeholder {
-            color: lighten(#48535d, 25%);
-        }
+    }
+
+    .search-clear {
+        top: 15px;
+        right: 15px;
     }
 
     // How does the header look for the various page "types"?
@@ -418,12 +410,8 @@ input:invalid ~ .search-clear {
         .back, .filter, .site {
             display: block;
         }
-        .back, .site-header .expand-toggle {
-            display: none;
-        }
-        .header-button.filter {
-            display: none;
-        }
+        .back, .site-header .expand-toggle,
+        .header-button.filter,
         .flex-span {
             display: none;
         }
@@ -445,6 +433,12 @@ input:invalid ~ .search-clear {
     }
 }
 
+@media $retina-wide {
+    .site-header .wordmark {
+        background-image: url(../img/pretty/wordmark-2x.png);
+        background-size: 232px auto;
+    }
+}
 
 // ***************** Narrow Mobile (< 600px)
 
@@ -502,94 +496,19 @@ input:invalid ~ .search-clear {
     }
 }
 
-
 @media $retina {
     .search-clear {
-        background-image: url(../img/icons/clear-2x.png);
-        background-size: 11px auto;
+        background-image: url(../img/pretty/close-2x.png);
+        background-size: 18px auto;
     }
     .header-button.settings:after {
-        background-image: url(../img/icons/settings-2x.png);
-        background-size: 23px auto;
-    }
-    .site-header .wordmark {
-        background-image: url(../img/logos/large-2x.png);
+        background-image: url(../img/pretty/gear-2x.png);
     }
     .header-button.persona.loading-submit {
         spinner-install-image('retina');
     }
 }
-$retina-wide= $retina unquote('and (min-width: 1024px)');
-@media $retina-wide {
-    #search-q {
-        gradient-two-color-with-image(#21292f, #2a353c, url(../img/icons/search-2x.png), unquote('8px 8px'), no-repeat);
-        background-size: 12px auto, auto;
-    }
-}
 
 .nav-overlay.show {
     background: transparent;
-}
-
-/* Content header (breadcrumbs, heading, subnav) - used on Account Settings, etc. */
-#page .account header.c {
-    margin-bottom: 10px;
-    h1 {
-        float: left;
-    }
-    .sub-nav {
-        float: right;
-    }
-    .sub-nav {
-        border-radius: 15px;
-        box-shadow: 0 1px 0 $barely-gray;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        li {
-            background-clip: padding-box;
-            float: left;
-            a {
-                gradient-two-color($white, rgba(238, 238, 238, .8));
-                border: 1px solid $note-gray;
-                border-right: 0;
-                color: $medium-gray;
-                display: inline-block;
-                font-size: 13px;
-                line-height: 15px;
-                padding: 5px 15px;
-                text-decoration: none;
-                text-shadow: 0 1px 0 rgba(255,255,255,.8);
-                &:hover {
-                    gradient-two-color($barely-gray, darken($barely-gray, 15%));
-                    color: $dark-gray;
-                    text-shadow: 0 1px 0 rgba(255,255,255,.8);
-                }
-                &:active {
-                    box-shadow: 0 1px 2px rgba(0,0,0,.1) inset;
-                    background: $faint-gray;
-                    border-color: $note-gray;
-                }
-            }
-            &.selected {
-                a, a:hover {
-                    border-color: $medium-gray;
-                    box-shadow: 0 1px 0 rgba(0,0,0,.2) inset;
-                    color: $white;
-                    gradient-two-color($medium-gray, rgba($medium-gray, .25));
-                    text-shadow: 0 1px 0 rgba(0,0,0,.2);
-                }
-            }
-            &:first-child a {
-                border-radius: 15px 0 0 15px;
-            }
-            &:last-child a {
-                border-radius: 0 15px 15px 0;
-                border-right: 1px solid $note-gray;
-            }
-            &:only-child a {
-                border-radius: 15px;
-            }
-        }
-    }
 }
