@@ -1,4 +1,4 @@
-define('ratings',
+define('reviews',
     ['capabilities', 'l10n', 'login', 'utils', 'urls', 'user', 'z', 'templates', 'requests', 'notification'],
     function(capabilities, l10n, login, utils, urls, user, z, nunjucks) {
     'use strict';
@@ -47,7 +47,7 @@ define('ratings',
 
     function renderReviewTemplate(overlay, ctx) {
         overlay.html(
-                nunjucks.env.getTemplate('ratings/write.html').render(ctx));
+                nunjucks.env.getTemplate('reviews/write.html').render(ctx));
         overlay.find('select[name="rating"]').ratingwidget('large');
     }
 

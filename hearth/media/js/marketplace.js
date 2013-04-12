@@ -46,7 +46,7 @@ require.config({
         'overlay',
         'paginator',
         'previews',
-        'ratings',
+        'reviews',
         'common/ratingwidget',
         'settings',
         'state',

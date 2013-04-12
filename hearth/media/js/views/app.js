@@ -37,7 +37,7 @@ define(
         builder.onload('app-data', function() {
             builder.z('title', builder.results['app-data'].name);
             overflow.init();
-        }).onload('ratings', function() {
+        }).onload('reviews', function() {
             var reviews = $('.detail .reviews li');
             if (reviews.length < 3) return;
 

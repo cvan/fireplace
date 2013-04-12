@@ -77,7 +77,7 @@
 
 <section class="main reviews c">
   <div id="reviews-detail">
-    {% defer (url=api('reviews', [slug]), id='ratings') %}
+    {% defer (url=api('reviews', [slug]), id='reviews') %}
       {% if this.meta.total_count %}
         <ul class="c ratings-placeholder-inner">
           {% for rat in this.objects.slice(0, 2) %}
@@ -85,7 +85,7 @@
           {% endfor %}
         </ul>
         <div class="{{ 'split' if this.user.can_rate else 'full' }}">
-          <a class="button alt average-rating" href="{{ url('app/ratings', [slug]) }}">
+          <a class="button alt average-rating" href="{{ url('app/reviews', [slug]) }}">
             <span>
               {{ _plural('{n} review', '{n} reviews',
                          n=this.meta.total_count) }}

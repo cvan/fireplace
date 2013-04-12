@@ -1,8 +1,8 @@
 var routes = [
     {pattern: '^/$', view_name: 'homepage'},
     {pattern: '^/index.html$', view_name: 'homepage'},
-    {pattern: '^/app/([^/<>"\']+)/ratings/add$', view_name: 'app/ratings/add'},
-    {pattern: '^/app/([^/<>"\']+)/ratings$', view_name: 'app/ratings'},
+    {pattern: '^/app/([^/<>"\']+)/reviews/add$', view_name: 'app/reviews/add'},
+    {pattern: '^/app/([^/<>"\']+)/reviews$', view_name: 'app/reviews'},
     {pattern: '^/app/([^/<>"\']+)/abuse$', view_name: 'app/abuse'},
     {pattern: '^/app/([^/<>"\']+)/privacy$', view_name: 'app/privacy'},
     {pattern: '^/user/([^/<>"\']+)/abuse', view_name: 'user/abuse'},

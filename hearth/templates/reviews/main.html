@@ -3,12 +3,12 @@
 {% include "_macros/rating.html" %}
 
 <section class="main c" id="reviews">
-  {% defer (url=api('reviews', [slug]), pluck='objects', id='ratings', paginate='#review-list') %}
+  {% defer (url=api('reviews', [slug]), pluck='objects', id='reviews', paginate='#review-list') %}
 
     {% if response.user.has_rated %}
-      <a class="button only-logged-in" id="write-review" href="{{ url('app/ratings/add', [slug]) }}">{{ _('Edit Review') }}</a>
+      <a class="button only-logged-in" id="write-review" href="{{ url('app/reviews/add', [slug]) }}">{{ _('Edit Review') }}</a>
     {% else %}
-      <a class="button only-logged-in" id="write-review" href="{{ url('app/ratings/add', [slug]) }}">{{ _('Write a Review') }}</a>
+      <a class="button only-logged-in" id="write-review" href="{{ url('app/reviews/add', [slug]) }}">{{ _('Write a Review') }}</a>
     {% endif %}
 
     <ul id="review-list" cla>

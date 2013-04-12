@@ -4,7 +4,7 @@ define(['l10n'], function(l10n) {
 
     return function(builder, args) {
         var slug = args[0];
-        builder.start('ratings/main.html', {
+        builder.start('reviews/main.html', {
             'slug': slug
         });
 
