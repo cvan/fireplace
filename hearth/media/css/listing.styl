@@ -11,6 +11,9 @@
         border-radius: 5px;
         margin: 10px 10px 0;
         position: relative;
+        &:hover {
+            border-color: darken($seavan-salt-white, 10%);
+        }
     }
     .mkt-tile + .tray {
         border-radius: 0 0 3px 3px;
@@ -29,9 +32,6 @@
             &.loadmore {
                 margin-bottom: -25px;
             }
-            &.item:hover {
-                border-color: darken($seavan-salt-white, 10%);
-            }
             a {
                 position: static;
             }
@@ -44,7 +44,6 @@
             }
             .author {
                 color: $text;
-                /*text-shadow: 0 0;*/
             }
         }
     }
