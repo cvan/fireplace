@@ -24,7 +24,11 @@
           <span class="cnt">
             {{ _plural('{n} Review', '{n} Reviews', n=app.ratings.count) }}
           </span>
-       {% endif %}
+        {% else %}
+          <span class="cnt">
+            {{ _('Not yet rated') }}
+          </span>
+        {% endif %}
         {% if not link %}
           </a>
         {% endif %}
