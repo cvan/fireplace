@@ -58,8 +58,6 @@ define('urls',
             return 'firefoxos';
         } else if (caps.firefoxAndroid) {
             return 'android';
-        } else {
-            return 'desktop';
         }
     };
 
@@ -73,12 +71,17 @@ define('urls',
                 carrier: user.get_setting('carrier') || '',
                 //scr: caps.widescreen() ? 'wide' : 'mobile',
                 //tch: caps.touch,
-                dev: _device(),
+                dev: _device() || '',
                 pro: buckets.get_profile()
             };
             if (user.logged_in()) {
                 args._user = user.get_token();
             }
+            Object.keys(args).forEach(function(k) {
+                if (!args[k]) {
+                    delete args[k];
+                }
+            });
             return require('utils').urlparams(out, args);
         };
     }
