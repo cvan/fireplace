@@ -5,7 +5,7 @@ define('views/debug',
 
     var debugEnabled = storage.getItem('debug-enabled');
     var label = $(document.getElementById('debug-status'));
-    z.doc.on('click', '#toggle-debug', function() {
+    z.doc.on('pointerdown', '#toggle-debug', function() {
         debugEnabled = storage.getItem('debug-enabled');
         if (debugEnabled === 'yes') {
             notification.notification({message: 'debug mode disabled', timeout: 1000});
@@ -16,21 +16,21 @@ define('views/debug',
             storage.setItem('debug-enabled', 'yes');
             label.text('yes');
         }
-    }).on('click', '#clear-localstorage', function(e) {
+    }).on('pointerdown', '#clear-localstorage', function(e) {
         storage.clear();
         notification.notification({message: 'localStorage cleared', timeout: 1000});
-    }).on('click', '.cache-menu a', function(e) {
+    }).on('pointerdown', '.cache-menu a', function(e) {
         e.preventDefault();
         var data = cache.get($(this).data('url'));
         data = JSON.stringify(data, null, '  ');
         $('#cache-inspector').html(utils.escape_(data));
-    }).on('click', '#install-yulelog', function(e) {
+    }).on('pointerdown', '#install-yulelog', function(e) {
         e.preventDefault();
         var origin = window.location.origin || (
             window.location.protocol + '//' + window.location.host);
         window.navigator.mozApps.installPackage(origin + '/packaged.webapp');
         notification.notification({message: 'yulelog installed (sorry, krupa, everything is the worst)', timeout: 1000});
-    }).on('click', '#submit-debug', function(e) {
+    }).on('pointerdown', '#submit-debug', function(e) {
         e.preventDefault();
         var data = {body: JSON.stringify({
             logs: log.all,

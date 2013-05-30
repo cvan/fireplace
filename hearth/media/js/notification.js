@@ -56,7 +56,7 @@ define('notification', ['capabilities', 'jquery', 'z'], function(caps, $, z) {
 
     }
 
-    notificationEl.append(contentEl).on('touchstart click', function() {
+    notificationEl.append(contentEl).on('pointerdown', function() {
         def.resolve();
     });
     z.body.append(notificationEl);

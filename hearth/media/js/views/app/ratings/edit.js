@@ -53,11 +53,11 @@ define('views/app/ratings/edit',
         builder.start('ratings/edit.html', {'slug': slug}).done(function() {
             var $reviewBox = $('.compose-review');
 
-            $('.edit-review-form .cancel').click(utils._pd(function() {
+            $('.edit-review-form .cancel').on('pointerdown', utils._pd(function() {
                 z.page.trigger('navigate', urls.reverse('app', [slug]));
             }));
 
-            $reviewBox.find('.rating').on('click touchend', function() {
+            $reviewBox.find('.rating').on('pointerdown touchend', function() {
                 var textarea = document.querySelector('.compose-review textarea:invalid');
                 if (textarea) {
                     textarea.focus();

@@ -16,7 +16,7 @@ define('overlay', ['keys', 'l10n', 'utils', 'z'], function(keys, l10n, utils, z)
     $cloak.on('touchmove', function(e) {
         e.preventDefault();
         e.stopPropagation();
-    }).on('click', function(e) {
+    }).on('pointerdown', function(e) {
         if ($(e.target).parent('body').length) {
             dismiss();
         }
@@ -24,7 +24,7 @@ define('overlay', ['keys', 'l10n', 'utils', 'z'], function(keys, l10n, utils, z)
         dismiss();
     });
 
-    z.body.on('click', function() {
+    z.body.on('pointerdown', function() {
         $('#notification').removeClass('show');
     }).on('keydown.overlayDismiss', function(e) {
         if (!utils.fieldFocused(e) && e.which == keys.ESCAPE) {
@@ -36,7 +36,7 @@ define('overlay', ['keys', 'l10n', 'utils', 'z'], function(keys, l10n, utils, z)
     }).on('decloak', function() {
         z.body.addClass('overlayed');
         $cloak.addClass('show');
-    }).on('click', '.modal .btn-cancel, .modal .cancel', utils._pd(dismiss));
+    }).on('pointerdown', '.modal .btn-cancel, .modal .cancel', utils._pd(dismiss));
 
     z.page.on('loaded', dismiss);
 });

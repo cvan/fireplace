@@ -7,11 +7,11 @@ define('views/search',
     var ngettext = l10n.ngettext;
 
     // Clear search field on 'cancel' search suggestions.
-    $('#site-header').on('click', '.header-button.cancel', _pd(function() {
+    $('#site-header').on('pointerdown', '.header-button.cancel', _pd(function() {
         $('#site-search-suggestions').trigger('dismiss');
         $('#search-q').val('');
 
-    })).on('click', '.header-button, .search-clear', _pd(function(e) {
+    })).on('pointerdown', '.header-button, .search-clear', _pd(function(e) {
         var $this = $(this),
             $btns = $('.header-button');
 
@@ -83,7 +83,7 @@ define('views/search',
         return query;
     }
 
-    z.body.on('click', '.expand-toggle', _pd(function() {
+    z.body.on('pointerdown', '.expand-toggle', _pd(function() {
         setTrays(expand = !expand);
     })).on('submit', 'form#search', function(e) {
         e.stopPropagation();

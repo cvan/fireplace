@@ -134,11 +134,11 @@ define('cat-dropdown',
             handleDropDownDisplay();
         }
     }
-    z.body.on('click', '.dropdown a', toggleMenu)
+    z.body.on('pointerdown', '.dropdown a', toggleMenu)
           .on('mouseup', '.cat-menu a', handleDropDownClicks)
           .on('mousedown', '.cat-menu a', handleDropDownMousedowns)
           .on('blur', '#cat-list', handleDropDownDisplay)
-          .on('click', '#cat-list', handleDropDownDisplay)
+          .on('pointerdown', '#cat-list', handleDropDownDisplay)
           .on('keydown', handleDropDownDisplayByKey);
     z.page.on('build_start', handleBuildStart)
           .on('reload_chrome', handleRenderDropdown);

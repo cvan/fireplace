@@ -40,7 +40,7 @@ define('views/feedback',
         z.body.trigger('decloak');
     }
 
-    z.body.on('click', '.submit-feedback', function(e) {
+    z.body.on('pointerdown', '.submit-feedback', function(e) {
         e.preventDefault();
         e.stopPropagation();
         // Focus the form if we're on the feedback page.

@@ -140,7 +140,7 @@ define('navigation',
 
     }
 
-    z.body.on('click', '.site-header .back', utils._pd(function() {
+    z.body.on('pointerdown', '.site-header .back', utils._pd(function() {
         console.log('← button pressed');
         if (!canNavigate()) {
             console.log('← button aborted; canNavigate is falsey.');
@@ -221,7 +221,7 @@ define('navigation',
                 $el.hasClass('post') || $el.hasClass('sync');
     }
 
-    z.body.on('click', 'a', function(e) {
+    z.body.on('pointerdown', 'a', function(e) {
         var href = this.getAttribute('href');
         var $elm = $(this);
         var preserveScrollData = $elm.data('preserveScroll');

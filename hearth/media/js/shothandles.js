@@ -17,10 +17,10 @@ define('shothandles', ['utils'], function(utils) {
             }
         }
 
-        $prevHandle.click(utils._pd(function() {
+        $prevHandle.on('pointerdown', utils._pd(function() {
             slider.toPrev();
         }));
-        $nextHandle.click(utils._pd(function() {
+        $nextHandle.on('pointerdown', utils._pd(function() {
             slider.toNext();
         }));
 

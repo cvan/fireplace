@@ -12,7 +12,7 @@ define('login',
         models('app').purge();
     }
 
-    z.body.on('click', '.persona', function(e) {
+    z.body.on('pointerdown', '.persona', function(e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -23,7 +23,7 @@ define('login',
             notification.notification({message: gettext('You have been signed in')});
         });
 
-    }).on('click', '.logout', function(e) {
+    }).on('pointerdown', '.logout', function(e) {
         e.preventDefault();
         user.clear_token();
         z.body.removeClass('logged-in');

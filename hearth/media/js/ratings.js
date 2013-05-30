@@ -32,7 +32,7 @@ define('ratings',
             $modal = $('.report-spam');
         }
 
-        $modal.one('click', '.menu a', utils._pd(function(e) {
+        $modal.one('pointerdown', '.menu a', utils._pd(function(e) {
             var $actionEl = $reviewEl.find('.actions .flag');
             $('.cloak').trigger('dismiss');
             $actionEl.text(gettext('Sending report...'));
@@ -87,7 +87,7 @@ define('ratings',
                 } else {
                     // Do the write modal.
                     if (capabilities.widescreen()) {
-                        $('.write-review').trigger('click');
+                        $('.write-review').trigger('pointerdown');
                     } else {
                         z.page.trigger('navigate', $reviewButton.attr('href'));
                     }
@@ -132,7 +132,7 @@ define('ratings',
         }
     }
 
-    z.page.on('click', '.review .actions a', utils._pd(function(e) {
+    z.page.on('pointerdown', '.review .actions a', utils._pd(function(e) {
         var $this = $(this);
         var action = $this.data('action');
         if (!action) return;
@@ -145,7 +145,7 @@ define('ratings',
                 flagReview($review);
                 break;
         }
-    })).on('click', '.write-review', addReview)
+    })).on('pointerdown', '.write-review', addReview)
     .on('loaded', function() {
         // Hijack <select> with stars.
         $('select[name="rating"]').ratingwidget();

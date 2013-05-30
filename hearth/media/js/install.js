@@ -141,7 +141,7 @@ define('install',
         z.win.trigger('app_install_error', [installer, product, msg]);
     }
 
-    z.page.on('click', '.product.launch', launchHandler)
-          .on('click', '.button.product:not(.launch):not(.incompatible)', installHandler);
+    z.page.on('pointerdown', '.product.launch', launchHandler)
+          .on('pointerdown', '.button.product:not(.launch):not(.incompatible)', installHandler);
 
 });

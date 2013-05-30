@@ -65,7 +65,7 @@ define('previews',
         }
         setActiveDot();
 
-        $tray.on('click.tray', '.dot', function() {
+        $tray.on('pointerdown.tray', '.dot', function() {
             console.log('Dot clicked, repositioning trays');
             slider.moveToPoint($(this).index());
         });
@@ -90,7 +90,7 @@ define('previews',
 
     // We're leaving the page, so destroy Flipsnap.
     z.win.on('unloading.tray', function() {
-        $('.tray').off('click.tray');
+        $('.tray').off('pointerdown.tray');
         for (var i = 0, e; e = slider_pool[i++];) {
             e.destroy();
         }

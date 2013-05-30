@@ -12,6 +12,7 @@ require.config({
         'underscore': 'lib/underscore',
         'nunjucks': 'lib/nunjucks',
         'nunjucks.compat': 'lib/nunjucks.compat',
+        'pointer': 'lib/pointer',
         'templates': '../../templates',
         'settings': ['settings_local', 'settings'],
         'stick': 'lib/stick',
@@ -20,6 +21,7 @@ require.config({
     shim: {
         'flipsnap': {exports: 'Flipsnap'},
         'jquery': {exports: 'jQuery'},
+        'pointer': {exports: 'pointer'},
         'underscore': {exports: '_'}
     }
 });
@@ -30,6 +32,7 @@ require.config({
         'marketplace',
         [
             'underscore',
+            'pointer',
             'buttons',
             'capabilities',
             'cat-dropdown',

@@ -17,12 +17,12 @@ define('views/app/ratings/add',
             var $reviewBox = $('.compose-review');
 
             $reviewBox.removeClass('modal')
-                      .find('.cancel').on('click', function() {
+                      .find('.cancel').on('pointerdown', function() {
                 z.page.trigger('navigate', urls.reverse('app', [slug]));
             });
 
             // Scroll the page down to make the send/cancel buttons visible.
-            $reviewBox.find('.rating').on('click touchend', function() {
+            $reviewBox.find('.rating').on('pointerdown touchend', function() {
                 var textarea = document.querySelector('.compose-review textarea');
                 if (textarea) {
                     textarea.focus();

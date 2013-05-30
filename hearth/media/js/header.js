@@ -12,7 +12,7 @@ define('header', ['capabilities', 'z'], function(capabilities, z) {
             $('.act-tray').addClass('active');
         }).on('mouseout', function() {
             $('.act-tray').removeClass('active');
-        }).on('click', '.account-links a', function() {
+        }).on('pointerdown', '.account-links a', function() {
             $('.account-links, .settings, .act-tray').removeClass('active');
         });
     }

@@ -74,7 +74,7 @@ define(
                 return;
             }
 
-            els.on('click', function() {
+            els.on('pointerdown', function() {
                 // Call the injector to load the next page's URL into the
                 // more button's parent. `target` is the selector to extract
                 // from the newly built HTML to inject into the currently

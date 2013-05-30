@@ -147,17 +147,17 @@ define('lightbox', ['keys', 'models', 'utils', 'shothandles', 'underscore', 'z']
     // we need to adjust the scroll distances on resize.
     z.win.on('resize', _.debounce(resize, 200));
 
-    // if a tray thumbnail is clicked, load up our lightbox.
-    z.page.on('click', '.tray ul a', utils._pd(showLightbox));
+    // if a tray thumbnail is pressed, load up our lightbox.
+    z.page.on('pointerdown', '.tray ul a', utils._pd(showLightbox));
 
-    // dismiss the lighbox when we click outside it or on the close button.
-    $lightbox.click(function(e) {
+    // dismiss the lighbox when we press outside it or on the close button.
+    $lightbox.on('pointerdown', function(e) {
         if ($(e.target).is('#lightbox')) {
             hideLightbox();
             e.preventDefault();
         }
     });
-    $lightbox.find('.close').click(utils._pd(hideLightbox));
+    $lightbox.find('.close').on('pointerdown', utils._pd(hideLightbox));
 
     // Hide screenshot overlay on back button hit.
     z.page.on('navigate', hideLightbox);

@@ -1,6 +1,6 @@
 define('paginator', ['z'], function(z) {
 
-    z.page.on('click', '.loadmore button', function(e) {
+    z.page.on('pointerdown', '.loadmore button', function(e) {
         // Get the button.
         var button = $(this);
         // Get the container.

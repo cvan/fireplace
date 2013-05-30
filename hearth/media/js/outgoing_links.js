@@ -20,7 +20,7 @@ define('outgoing_links', ['capabilities', 'z'], function(capabilities, z) {
             if (capabilities.chromeless) {
                 $a.attr('target', '_blank');
             }
-            $a.click(function(e) {
+            $a.on('pointerdown', function(e) {
                 // Change it to the outgoing URL:
                 $a.attr('href', outgoing);
                 setTimeout(function() {
@@ -33,7 +33,7 @@ define('outgoing_links', ['capabilities', 'z'], function(capabilities, z) {
     });
 
     // If we're inside the Marketplace app, open external links in the Browser.
-    z.doc.on('click', 'a.external, a[rel=external]', function() {
+    z.doc.on('pointerdown', 'a.external, a[rel=external]', function() {
         if (capabilities.chromeless) {
             $(this).attr('target', '_blank');
         }

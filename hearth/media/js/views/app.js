@@ -5,11 +5,11 @@ define('views/app',
 
     var gettext = l10n.gettext;
 
-    z.page.on('click', '#product-rating-status .toggle', utils._pd(function() {
+    z.page.on('pointerdown', '#product-rating-status .toggle', utils._pd(function() {
         // Show/hide scary content-rating disclaimers to developers.
         $(this).closest('.toggle').siblings('div').toggleClass('hidden');
 
-    })).on('click', '.show-toggle', utils._pd(function() {
+    })).on('pointerdown', '.show-toggle', utils._pd(function() {
         var $this = $(this),
             newTxt = $this.attr('data-toggle-text');
         // Toggle "more..." or "less..." text.
@@ -18,11 +18,11 @@ define('views/app',
         // Toggle description.
         $this.closest('.blurbs').find('.collapsed').toggle();
 
-    })).on('click', '.approval-pitch', utils._pd(function() {
+    })).on('pointerdown', '.approval-pitch', utils._pd(function() {
         $('#preapproval-shortcut').submit();
 
-    })).on('click', '.product-details .icon', utils._pd(function(e) {
-        // When I click on the icon, append `#id=<id>` to the URL.
+    })).on('pointerdown', '.product-details .icon', utils._pd(function(e) {
+        // When I press down on the icon, append `#id=<id>` to the URL.
         window.location.hash = 'id=' + $('.product').data('id');
         e.stopPropagation();
     }));
@@ -30,7 +30,7 @@ define('views/app',
     // Init desktop abuse form modal trigger.
     // The modal is responsive even if this handler isn't removed.
     if (caps.widescreen()) {
-        z.page.on('click', '.abuse .button', function(e) {
+        z.page.on('pointerdown', '.abuse .button', function(e) {
             e.preventDefault();
             e.stopPropagation();
             z.body.trigger('decloak');
