@@ -60,6 +60,7 @@ define('install',
 
         // Bust the cache
         cache.bust(urls.api.url('installed'));
+        user.set_purchased(app);
     }
 
     function purchaseError(product, msg) {
@@ -115,6 +116,7 @@ define('install',
 
         // Bust the cache
         cache.bust(urls.api.url('installed'));
+        user.set_installed(app);
     }
 
     function installError(installer, product, msg) {

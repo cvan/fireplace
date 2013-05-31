@@ -25,7 +25,9 @@ define('login',
 
     }).on('click', '.logout', function(e) {
         e.preventDefault();
+        user.clear_apps();
         user.clear_token();
+        user.clear_permissions();
         z.body.removeClass('logged-in');
         z.page.trigger('reload_chrome');
         flush_caches();
@@ -79,6 +81,7 @@ define('login',
 
         requests.post(urls.api.url('login'), data).done(function(data) {
             user.set_token(data.token, data.settings);
+            user.update_apps(data.apps);
             user.update_permissions(data.permissions);
             console.log('Login succeeded, preparing the app');
 

@@ -79,7 +79,7 @@
 </section>
 
 {% defer (url=endpoint, as='app', key=slug) %}
-  {% if this.user.developed or user.get_permission('reviewer') %}
+  {% if user.has_developed(this) or user.get_permission('reviewer') %}
     <section class="main actions infobox">
       <div>
         <p class="split"><a href="/developers/app/{{ slug }}/edit" class="button manage" rel="external">
@@ -104,7 +104,7 @@
             {{ rating(rat, detailpage=true) }}
           {% endfor %}
         </ul>
-        <div class="{{ 'split' if not this.user.developed else 'full' }}">
+        <div class="{{ 'split' if not user.has_developed(this) else 'full' }}">
           <a class="button alt average-rating" href="{{ url('app/ratings', [slug]) }}">
             <span>
               {{ _plural('{n} Review', '{n} Reviews',
@@ -118,9 +118,10 @@
           {{ _('App not yet rated') }}
         </p>
       {% endif %}
-      {% if (this.user.can_rate or not user.logged_in()) or this.user.has_rated %}
+      {% set app = {'premium': this.info.premium, 'id': this.info.id} %}
+      {% if (user.can_review(app) or not user.logged_in()) or user.has_reviewed(app) %}
         <div class="{{ 'split' if this.objects.length else ' full' }}">
-          {% if user.logged_in() and this.user.has_rated %}
+          {% if user.logged_in() and user.has_reviewed(app) %}
             <a class="button write-review alt" id="edit-review" href="{{ url('app/ratings/edit', [slug]) }}"
                data-app="{{ slug }}">
               {{ _('Edit Your Review') }}</a>

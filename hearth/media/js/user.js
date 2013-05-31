@@ -7,6 +7,7 @@ define('user',
     var token;
     var settings = {};
     var permissions = {};
+    var apps = {};
 
     var save_to_ls = !capabilities.phantom;
 
@@ -15,6 +16,7 @@ define('user',
         log.unmention(token);
         settings = JSON.parse(storage.getItem('settings') || '{}');
         permissions = JSON.parse(storage.getItem('permissions') || '{}');
+        apps = JSON.parse(storage.getItem('apps') || '{}');
     }
 
     function detect_mobile_network(navigator) {
@@ -86,6 +88,10 @@ define('user',
         save_settings();
     }
 
+    function clear_apps() {
+        apps = {};
+    }
+
     function clear_settings() {
         settings = {};
     }
@@ -103,6 +109,10 @@ define('user',
         token = null;
     }
 
+    function get_apps() {
+        return apps;
+    }
+
     function get_setting(setting) {
         return settings[setting] || null;
     }
@@ -113,6 +123,82 @@ define('user',
 
     function get_settings() {
         return settings;
+    }
+
+    function can_review(app) {
+        // If I developed the app or if it's a paid app I haven't purchased,
+        // don't let me review it.
+        if (has_developed(app) || (app.premium && !has_purchased(app))) {
+            return false;
+        }
+        return true;
+    }
+
+    function check_app(key, app) {
+        if (typeof app === 'object') {
+            app = app.id;
+        }
+        return (apps[key] || []).indexOf(+app) > -1;
+    }
+
+    function has_developed(app) {
+        return check_app('developed', app);
+    }
+
+    function has_installed(app) {
+        return check_app('installed', app);
+    }
+
+    function has_purchased(app) {
+        return check_app('purchased', app);
+    }
+
+    function has_reviewed(app) {
+        return check_app('reviewed', app);
+    }
+
+    function set_app(key, app) {
+        if (typeof app === 'object') {
+            app = app.id;
+        }
+        if (key in apps && !check_app(key, app)) {
+            apps[key].push(app);
+            save_apps();
+            return true;
+        }
+        return false;
+    }
+
+    function set_installed(app) {
+        return set_app('installed', app);
+    }
+
+    function set_purchased(app) {
+        return set_app('purchased', app);
+    }
+
+    function set_reviewed(app) {
+        return set_app('reviewed', app);
+    }
+
+    function remove_app(key, app) {
+        if (typeof app === 'object') {
+            app = app.id;
+        }
+        if (key in apps && check_app(key, app)) {
+            apps.splice(apps[key].indexOf(app), 1);
+            save_apps();
+            return true;
+        }
+        return false;
+    }
+
+    function remove_installed(app) {
+        return remove_app('installed', app);
+    }
+
+    function remove_reviewed(app) {
+        return remove_app('reviewed', app);
     }
 
     function set_token(new_token, new_settings) {
@@ -152,6 +238,24 @@ define('user',
         save_settings();
     }
 
+    function update_apps(data) {
+        if (!data) {
+            return;
+        }
+        console.log('Updating user apps', data);
+        apps = data;
+        save_apps();
+    }
+
+    function save_apps() {
+        if (save_to_ls) {
+            console.log('Saving apps to localStorage');
+            storage.setItem('apps', JSON.stringify(apps));
+        } else {
+            console.log('Apps not saved to localStorage');
+        }
+    }
+
     function save_permissions() {
         if (save_to_ls) {
             console.log('Saving permissions to localStorage');
@@ -171,15 +275,28 @@ define('user',
     }
 
     return {
+        can_review: can_review,
+        clear_apps: clear_apps,
         clear_settings: clear_settings,
         clear_token: clear_token,
         detect_mobile_network: detect_mobile_network,
+        get_apps: get_apps,
         get_setting: get_setting,
         get_permission: get_permission,
         get_settings: get_settings,
         get_token: function() {return token;},
+        has_developed: has_developed,
+        has_installed: has_installed,
+        has_purchased: has_purchased,
+        has_reviewed: has_reviewed,
         logged_in: function() {return !!token;},
         set_token: set_token,
+        set_installed: set_installed,
+        set_purchased: set_purchased,
+        set_reviewed: set_reviewed,
+        remove_installed: remove_installed,
+        remove_reviewed: remove_reviewed,
+        update_apps: update_apps,
         update_settings: update_settings,
         update_permissions: update_permissions
     };

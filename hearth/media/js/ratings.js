@@ -64,6 +64,7 @@ define('ratings',
                 data.user.has_rated = false;
                 return data;
             });
+            user.remove_reviewed(app);
             require('views').reload();
 
         }).fail(function() {
@@ -179,6 +180,8 @@ define('ratings',
                 data.user.has_rated = true;
                 return data;
             });
+
+            user.add_reviewed(app);
 
             notify({message: gettext('Your review was posted')});
             z.page.trigger('navigate', urls.reverse('app', [$this.data('app')]));

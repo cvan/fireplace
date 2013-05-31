@@ -7,17 +7,22 @@
     <h2>{{ _('Reviews') }}</h2>
   </header>
   {% defer (url=apiParams('reviews', {'app': slug}), pluck='objects', id='ratings', paginate='.ratings-placeholder-inner') %}
-    <p id="add-review" class="primary-button">
-      {% if response.user.has_rated %}
-        <a class="button write-review" id="edit-review" href="{{ url('app/ratings/edit', [slug]) }}"
-           data-app="{{ slug }}">
-           {{ _('Edit Review') }}</a>
-      {% else %}
-        <a class="button write-review" id="write-review" href="{{ url('app/ratings/add', [slug]) }}"
-           data-app="{{ slug }}">
-           {{ _('Write a Review') if user.logged_in() else  _('Sign in to Review') }}</a>
-      {% endif %}
-    </p>
+
+    {% set app = {'premium': response.info.premium, 'id': response.info.id} %}
+    {% if (user.can_review(app) or not user.logged_in()) or user.has_reviewed(app) %}
+      <p id="add-review" class="primary-button">
+        {% if user.logged_in() and user.has_reviewed(app) %}
+          <a class="button write-review" id="edit-review" href="{{ url('app/ratings/edit', [slug]) }}"
+             data-app="{{ slug }}">
+              {{ _('Edit Your Review') }}</a>
+        {% else %}
+          <a class="button write-review" id="write-review" href="{{ url('app/ratings/add', [slug]) }}"
+             data-app="{{ slug }}">
+             {{ _('Write a Review') if user.logged_in() else  _('Sign in to Review') }}</a>
+        {% endif %}
+      </p>
+    {% endif %}
+
     <div class="reviews reviews-listing">
       <ul class="ratings-placeholder-inner">
         {% for rat in this %}
