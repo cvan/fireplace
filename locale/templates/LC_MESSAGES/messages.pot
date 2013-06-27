@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-11T22:45:08.053Z\n"
+"POT-Creation-Date: 2013-06-27T20:05:17.631Z\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgid "Free"
 msgstr ""
 
 #: hearth/templates/_macros/market_button.html:4
+#: hearth/media/js/buttons.js:43
 msgid "Install"
 msgstr ""
 
@@ -27,7 +28,7 @@ msgid "({n})"
 msgstr ""
 
 #: hearth/templates/_macros/market_tile.html:30
-#: hearth/templates/detail/main.html:110
+#: hearth/templates/detail/main.html:114
 msgid "{n} Review"
 msgid_plural "{n} Reviews"
 msgstr[0] ""
@@ -103,7 +104,12 @@ msgid "No apps in this category"
 msgstr ""
 
 #: hearth/templates/category/main.html:68
-msgid "No apps in this category, try again later"
+msgid "The category you requested does not exist."
+msgstr ""
+
+#: hearth/templates/category/main.html:70
+#: hearth/templates/user/purchases.html:39
+msgid "An internal server error occurred. Please try again later."
 msgstr ""
 
 #: hearth/templates/confirmation.html:0
@@ -121,8 +127,9 @@ msgid "Yes"
 msgstr ""
 
 #: hearth/templates/detail/abuse.html:5
-#: hearth/templates/detail/main.html:175
-#: hearth/media/js/views/app/abuse.js:33
+#: hearth/templates/detail/main.html:179
+#: hearth/templates/detail/receipt.html:68
+#: hearth/media/js/views/app/abuse.js:34
 msgid "Report Abuse"
 msgstr ""
 
@@ -130,111 +137,134 @@ msgstr ""
 msgid "Send Report"
 msgstr ""
 
-#: hearth/templates/detail/main.html:33
+#: hearth/templates/detail/main.html:46
 msgid "Installed!"
 msgstr ""
 
-#: hearth/templates/detail/main.html:36
+#: hearth/templates/detail/main.html:49
 msgid "Launch this app from your <b>Applications</b> directory."
 msgstr ""
 
-#: hearth/templates/detail/main.html:39
+#: hearth/templates/detail/main.html:52
 msgid "Launch this app from your <b>Windows desktop</b> or <b>Start &#9658; All Programs</b>."
 msgstr ""
 
-#: hearth/templates/detail/main.html:42
+#: hearth/templates/detail/main.html:55
 msgid "Launch this app from your <b>dash</b>, <b>Application picker</b>, or <b>Applications menu</b>."
 msgstr ""
 
 #: hearth/templates/detail/main.html:14
 #: hearth/templates/detail/main.html:15
+#: hearth/templates/detail/receipt.html:18
+#: hearth/templates/detail/receipt.html:19
 #: hearth/media/js/views/app.js:60
 msgid "Loading..."
 msgstr ""
 
 #: hearth/templates/detail/main.html:24
+#: hearth/templates/detail/receipt.html:28
 #: hearth/templates/errors/fragment.html:1
 #: hearth/templates/not_found.html:2
+#: hearth/templates/user/purchases.html:38
 msgid "Oh no!"
 msgstr ""
 
-#: hearth/templates/detail/main.html:25
-#: hearth/templates/not_found.html:3
-msgid "The page you were looking for was not found."
+#: hearth/templates/detail/main.html:26
+msgid "The app requested is not public."
 msgstr ""
 
-#: hearth/templates/detail/main.html:55
+#: hearth/templates/detail/main.html:28
+msgid "The app requested was not found."
+msgstr ""
+
+#: hearth/templates/detail/main.html:30
+msgid "The app requested is not available for your region."
+msgstr ""
+
+#: hearth/templates/detail/main.html:31
+msgid "You may wish to contact the developer if you would like to see a version of this app for your region."
+msgstr ""
+
+#: hearth/templates/detail/main.html:33
+msgid "A server error occurred. Please try again later."
+msgstr ""
+
+#: hearth/templates/detail/main.html:37
+msgid "A connection error occurred."
+msgstr ""
+
+#: hearth/templates/detail/main.html:67
 msgid "Less&hellip;"
 msgstr ""
 
-#: hearth/templates/detail/main.html:55
+#: hearth/templates/detail/main.html:67
 msgid "More&hellip;"
 msgstr ""
 
-#: hearth/templates/detail/main.html:62
-msgid "Description"
-msgstr ""
-
-#: hearth/templates/detail/main.html:66
+#: hearth/templates/detail/main.html:72
 msgid "Version"
 msgstr ""
 
-#: hearth/templates/detail/main.html:68
+#: hearth/templates/detail/main.html:74
 msgid "Latest version: {version}"
 msgstr ""
 
-#: hearth/templates/detail/main.html:86
+#: hearth/templates/detail/main.html:90
 msgid "Edit Listing"
 msgstr ""
 
-#: hearth/templates/detail/main.html:89
+#: hearth/templates/detail/main.html:93
 msgid "Approve / Reject"
 msgstr ""
 
-#: hearth/templates/detail/main.html:89
+#: hearth/templates/detail/main.html:93
 msgid "Review History"
 msgstr ""
 
-#: hearth/templates/detail/main.html:100
+#: hearth/templates/detail/main.html:104
 #: hearth/templates/ratings/main.html:6
-#: hearth/media/js/views/app/ratings.js:17
+#: hearth/media/js/views/app/ratings.js:18
 msgid "Reviews"
 msgstr ""
 
-#: hearth/templates/detail/main.html:118
+#: hearth/templates/detail/main.html:122
 msgid "App not yet rated"
 msgstr ""
 
-#: hearth/templates/detail/main.html:126
+#: hearth/templates/detail/main.html:130
 msgid "Edit Your Review"
 msgstr ""
 
-#: hearth/templates/detail/main.html:130
+#: hearth/templates/detail/main.html:134
 #: hearth/templates/ratings/main.html:17
 #: hearth/templates/ratings/write.html:2
-#: hearth/media/js/views/app/ratings/add.js:44
+#: hearth/media/js/views/app/ratings/add.js:41
 msgid "Write a Review"
 msgstr ""
 
-#: hearth/templates/detail/main.html:130
+#: hearth/templates/detail/main.html:134
 #: hearth/templates/ratings/main.html:17
 msgid "Sign in to Review"
 msgstr ""
 
-#: hearth/templates/detail/main.html:147
+#: hearth/templates/detail/main.html:151
+#: hearth/templates/detail/receipt.html:40
 msgid "Support Email"
 msgstr ""
 
-#: hearth/templates/detail/main.html:153
+#: hearth/templates/detail/main.html:157
+#: hearth/templates/detail/receipt.html:46
 msgid "Support Site"
 msgstr ""
 
-#: hearth/templates/detail/main.html:158
+#: hearth/templates/detail/main.html:162
+#: hearth/templates/detail/receipt.html:51
 msgid "Homepage"
 msgstr ""
 
-#: hearth/templates/detail/main.html:164
+#: hearth/templates/detail/main.html:168
 #: hearth/templates/detail/privacy.html:3
+#: hearth/templates/detail/receipt.html:57
 #: hearth/templates/footer.html:29
 #: hearth/templates/privacy.html:2
 #: hearth/templates/settings/feedback.html:22
@@ -243,15 +273,16 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
-#: hearth/templates/detail/main.html:170
+#: hearth/templates/detail/main.html:174
+#: hearth/templates/detail/receipt.html:63
 msgid "Statistics"
 msgstr ""
 
-#: hearth/templates/detail/main.html:182
+#: hearth/templates/detail/main.html:190
 msgid "Premium version available"
 msgstr ""
 
-#: hearth/templates/detail/main.html:199
+#: hearth/templates/detail/main.html:207
 msgid "Rating by the <a href=\"{dejus_url}\" title=\"{dejus}\">DEJUS</a>"
 msgstr ""
 
@@ -261,6 +292,15 @@ msgstr ""
 
 #: hearth/templates/detail/privacy.html:11
 msgid "Loading Privacy Policy..."
+msgstr ""
+
+#: hearth/templates/detail/receipt.html:8
+msgid "Thank you for purchasing"
+msgstr ""
+
+#: hearth/templates/detail/receipt.html:29
+#: hearth/templates/not_found.html:3
+msgid "The page you were looking for was not found."
 msgstr ""
 
 #: hearth/templates/errors/fragment.html:2
@@ -301,7 +341,7 @@ msgstr ""
 #: hearth/templates/header.html:26
 #: hearth/templates/settings/nav.html:8
 #: hearth/templates/settings/nav.html:11
-#: hearth/media/js/views/feedback.js:62
+#: hearth/media/js/views/feedback.js:61
 msgid "Feedback"
 msgstr ""
 
@@ -358,10 +398,10 @@ msgstr ""
 
 #: hearth/templates/header.html:22
 #: hearth/templates/settings/nav.html:7
-#: hearth/templates/user/purchases.html:39
+#: hearth/templates/user/purchases.html:44
 #: hearth/templates/user/purchases.html:11
 #: hearth/templates/user/purchases.html:31
-#: hearth/media/js/views/purchases.js:30
+#: hearth/media/js/views/purchases.js:32
 msgid "My Apps"
 msgstr ""
 
@@ -380,7 +420,7 @@ msgstr ""
 
 #: hearth/templates/ratings/edit.html:4
 #: hearth/templates/ratings/main.html:13
-#: hearth/media/js/views/app/ratings/edit.js:85
+#: hearth/media/js/views/app/ratings/edit.js:72
 msgid "Edit Review"
 msgstr ""
 
@@ -410,6 +450,15 @@ msgstr ""
 
 #: hearth/templates/ratings/main.html:34
 msgid "This app has no reviews."
+msgstr ""
+
+#: hearth/templates/ratings/rating.html:4
+#: hearth/media/js/views/app/ratings/rating.js:13
+msgid "App Review"
+msgstr ""
+
+#: hearth/templates/ratings/rating.html:16
+msgid "The review you requested does not exist."
 msgstr ""
 
 #: hearth/templates/ratings/report.html:2
@@ -500,11 +549,11 @@ msgstr ""
 msgid "You were successfully signed up for the Marketplace newsletter!"
 msgstr ""
 
-#: hearth/templates/user/purchases.html:44
+#: hearth/templates/user/purchases.html:49
 msgid "You must be signed in to view your apps."
 msgstr ""
 
-#: hearth/templates/user/purchases.html:45
+#: hearth/templates/user/purchases.html:50
 msgid "Sign in / Sign up"
 msgstr ""
 
@@ -512,16 +561,12 @@ msgstr ""
 msgid "You have no apps"
 msgstr ""
 
-#: hearth/media/js/buttons.js:34
+#: hearth/media/js/buttons.js:41
 msgid "Purchasing"
 msgstr ""
 
-#: hearth/media/js/buttons.js:40
-msgid "Purchased"
-msgstr ""
-
 #. "Launch" as in "Launch the app"
-#: hearth/media/js/buttons.js:79
+#: hearth/media/js/buttons.js:86
 msgid "Launch"
 msgstr ""
 
@@ -536,13 +581,13 @@ msgstr[1] ""
 msgid "Category"
 msgstr ""
 
-#: hearth/media/js/install.js:34
+#: hearth/media/js/install.js:39
 #: hearth/media/js/payments/payments.js:86
 msgid "Payment cancelled"
 msgstr ""
 
 #. The app's installation has failed.
-#: hearth/media/js/install.js:142
+#: hearth/media/js/install.js:147
 msgid "Install failed. Please try again later."
 msgstr ""
 
@@ -554,11 +599,11 @@ msgstr ""
 msgid "You have been signed in"
 msgstr ""
 
-#: hearth/media/js/login.js:126
+#: hearth/media/js/login.js:137
 msgid "Persona login failed. Maybe you don't have an account under that email address?"
 msgstr ""
 
-#: hearth/media/js/login.js:131
+#: hearth/media/js/login.js:142
 msgid "Persona login failed. A server error was encountered."
 msgstr ""
 
@@ -578,6 +623,15 @@ msgstr ""
 msgid "Payment failed. Try again later."
 msgstr ""
 
+#. This error is raised when we are unable to fetch a JWT from the payments API.
+#: hearth/media/js/payments/payments.js:104
+msgid "Error while communicating with server. Try again later."
+msgstr ""
+
+#: hearth/media/js/payments/payments.js:111
+msgid "Your device does not support purchases."
+msgstr ""
+
 #. The report is an abuse report for reviews
 #: hearth/media/js/ratings.js:39
 msgid "Sending report..."
@@ -595,16 +649,56 @@ msgstr ""
 msgid "Your review was deleted"
 msgstr ""
 
-#: hearth/media/js/ratings.js:72
+#: hearth/media/js/ratings.js:86
 msgid "There was a problem deleting the review"
 msgstr ""
 
-#: hearth/media/js/ratings.js:185
+#: hearth/media/js/ratings.js:223
 msgid "Your review was posted"
 msgstr ""
 
-#: hearth/media/js/ratings.js:199
+#: hearth/media/js/ratings.js:237
 msgid "Error while submitting review"
+msgstr ""
+
+#: hearth/media/js/settings.js:20
+msgid "Worldwide"
+msgstr ""
+
+#: hearth/media/js/settings.js:21
+msgid "Brazil"
+msgstr ""
+
+#: hearth/media/js/settings.js:22
+msgid "Colombia"
+msgstr ""
+
+#: hearth/media/js/settings.js:23
+msgid "Poland"
+msgstr ""
+
+#: hearth/media/js/settings.js:24
+msgid "Serbia"
+msgstr ""
+
+#: hearth/media/js/settings.js:25
+msgid "Montenegro"
+msgstr ""
+
+#: hearth/media/js/settings.js:26
+msgid "Spain"
+msgstr ""
+
+#: hearth/media/js/settings.js:27
+msgid "United Kingdom"
+msgstr ""
+
+#: hearth/media/js/settings.js:28
+msgid "United States"
+msgstr ""
+
+#: hearth/media/js/settings.js:29
+msgid "Venezuela"
 msgstr ""
 
 #. {n} is the number of characters left.
@@ -630,6 +724,14 @@ msgstr ""
 msgid "There was a problem updating your review"
 msgstr ""
 
+#: hearth/media/js/views/app/receipt.js:22
+msgid "Please sign in to view the receipt"
+msgstr ""
+
+#: hearth/media/js/views/app/receipt.js:41
+msgid "Receipt"
+msgstr ""
+
 #: hearth/media/js/views/app.js:61
 msgid "App Details"
 msgstr ""
@@ -651,10 +753,10 @@ msgstr ""
 msgid "Search Results"
 msgstr ""
 
-#: hearth/media/js/views/settings.js:25
+#: hearth/media/js/views/settings.js:26
 msgid "Settings saved"
 msgstr ""
 
-#: hearth/media/js/views/settings.js:27
+#: hearth/media/js/views/settings.js:28
 msgid "Settings could not be saved"
 msgstr ""
