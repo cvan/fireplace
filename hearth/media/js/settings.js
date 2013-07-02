@@ -33,6 +33,8 @@ define('settings', ['l10n', 'settings_local', 'underscore'], function(l10n, sett
             've': gettext('Venezuela')
         },
 
+        paid_regions: ['es'],
+
         timing_url: '',  // TODO: figure this out
 
         persona_unverified_issuer: 'login.persona.org',

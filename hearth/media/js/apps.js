@@ -2,8 +2,8 @@
     Provides the apps module, a wrapper around navigator.mozApps
 */
 define('apps',
-    ['buckets', 'capabilities', 'defer', 'l10n', 'settings', 'underscore', 'utils'],
-    function(buckets, capabilities, defer, l10n, settings, _, utils) {
+    ['buckets', 'capabilities', 'defer', 'l10n', 'settings', 'underscore', 'user', 'utils'],
+    function(buckets, capabilities, defer, l10n, settings, _, user, utils) {
     'use strict';
 
     var gettext = l10n.gettext;
@@ -97,9 +97,11 @@ define('apps',
         var device = capabilities.device_type();
         if (product.payment_required && !capabilities.navPay && !settings.simulate_nav_pay) {
             reasons.push(gettext('Your device does not support payments.'));
+        } else if (product.payment_required && !(user.get_setting('region') in settings.paid_regions)) {
+            reasons.push(gettext('This app is not available for purchase in your region.'));
         }
         if (!capabilities.webApps) {
-            reasons.push(gettext('Your browser or device is not web app compatible.'));
+            reasons.push(gettext('Your browser or device is not web-app compatible.'));
         } else if (!_.contains(product.device_types, device)) {
             reasons.push(gettext('This app is not available for your platform.'));
         }
