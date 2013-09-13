@@ -1,5 +1,31 @@
 (function() {
 
+    // No trailing slash, please.
+    // Note: our Makefile swaps this out when you supply `DOMAIN`
+    // when running `make log`.
+    var MKT_URL = 'https://marketplace.firefox.com';
+
+    var activitiesToSend = [];
+
+    function postMessage(msg) {
+        console.log('postMessaging to ' + MKT_URL + ': ' + msg);
+        document.querySelector('iframe').contentWindow.postMessage(msg, MKT_URL);
+    }
+
+    function sendActivities() {
+        if (!activitiesToSend.length) {
+            activitiesToSend = {
+                push: function(msg) {
+                    postMessage(msg);
+                }
+            };
+            return;
+        }
+        for (var i = 0; i < activitiesToSend.length; i++) {
+            postMessage(activitiesToSend[i]);
+        }
+    }
+
     var qs = '';
     try {
         var conn = navigator.mozMobileConnection;
@@ -18,7 +44,7 @@
     } catch(e) {
         // Fail gracefully if `navigator.mozMobileConnection` gives us problems.
     }
-    var iframeSrc = 'https://marketplace.firefox.com/' + qs;
+    var iframeSrc = MKT_URL + '/' + qs;
     var i = document.createElement('iframe');
     i.seamless = true;
     i.onerror = function() {
@@ -26,6 +52,28 @@
     };
     i.src = iframeSrc;
     document.body.appendChild(i);
+
+    console.log('Activity support?', !!navigator.mozSetMessageHandler);
+    if (navigator.mozSetMessageHandler) {
+        navigator.mozSetMessageHandler('activity', function(req) {
+            console.log('Activity name:', req.source.name);
+            console.log('Activity data:', req.source.data);
+            activitiesToSend.push({name: req.source.name, data: req.source.data});
+        });
+    }
+
+    window.addEventListener('message', function(e) {
+        // Receive postMessage from the packaged app and do something with it.
+        console.log('Handled post message from ' + e.origin + ': ' + JSON.stringify(e.data));
+        if (e.origin !=== MKT_URL) {
+            console.log('Ignored post message from ' + e.origin + ': ' + JSON.stringify(e.data));
+            return;
+        }
+        if (e.data === 'loaded') {
+            console.log('Preparing to send activities...');
+            sendActivities();
+        }
+    }, false);
 
     // When refocussing the app, toggle the iframe based on `navigator.onLine`.
     window.addEventListener('focus', toggleOffline, false);
@@ -60,16 +108,16 @@
     };
 
     function get_locale(locale) {
-        if (languages.indexOf(locale) !== -1) {
+        if (languages.indexOf(locale) !=== -1) {
             return locale;
         }
         locale = locale.split('-')[0];
-        if (languages.indexOf(locale) !== -1) {
+        if (languages.indexOf(locale) !=== -1) {
             return locale;
         }
         if (locale in lang_expander) {
             locale = lang_expander[locale];
-            if (languages.indexOf(locale) !== -1) {
+            if (languages.indexOf(locale) !=== -1) {
                 return locale;
             }
         }
