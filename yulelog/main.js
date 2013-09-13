@@ -1,47 +1,27 @@
 (function() {
 
     // No trailing slash, please.
-    var MKT_URL = 'https://marketplace.firefox.com';
+    //var MKT_URL = 'https://marketplace.firefox.com';
+    var MKT_URL = 'http://10.250.2.188:8675';
 
-    var webactivities = !!(window.setMessageHandler || window.mozSetMessageHandler);
+    var activitiesToSend = [];
 
-    if (navigator.mozSetMessageHandler) {
-        // Load up an app.
-        navigator.mozSetMessageHandler('marketplace-app', function(req) {
-            var url = '';
-            var slug = req.source.data.slug;
-            var manifest_url = req.source.data.manifest_url || req.source.data.manifest;
-            if (slug) {
-                url = '/app/' + slug + '?src=webactivities';
-            } else if (manifest_url) {
-                url = '/search/?q=:manifest=' + manifest_url + '&src=webactivities';
-            }
-            e = document.createElement('div');
-            e.innerHTML = url;
-            document.body.appendChild(e);
-        });
-
-        // Load up the page to leave a rating for the app.
-        navigator.mozSetMessageHandler('marketplace-app-rating', function(req) {
-            var slug = req.source.data.slug;
-            z.page.trigger('navigate', [urls.reverse('app/ratings/add', [slug])]);
-        });
-
-        // Load up a category page.
-        navigator.mozSetMessageHandler('marketplace-category', function(req) {
-            var slug = req.source.data.slug;
-            z.page.trigger('navigate', [urls.reverse('category', [slug])]);
-        });
-
-        // Load up a search.
-        navigator.mozSetMessageHandler('marketplace-search', function(req) {
-            var query = req.source.data.query;
-            z.page.trigger('search', {q: query});
-        });
+    function sendActivities() {
+        if (!activitiesToSend.length) {
+            activitiesToSend = {
+                push: function(msg) {
+                    log('postMessaging to ' + MKT_URL + ': ' + msg);
+                    document.querySelector('iframe').contentWindow.postMessage(msg, MKT_URL);
+                }
+            };
+            return;
+        }
+        for (var i = 0; i < activitiesToSend.length; i++) {
+            var msg = activitiesToSend[i].pop();
+            log('postMessaging to ' + MKT_URL + ': ' + msg);
+            document.querySelector('iframe').contentWindow.postMessage(msg, MKT_URL);
+        }
     }
-    // e = document.createElement('div');
-    // e.innerHTML = 'no' + (navigator.mozSetMessageHandler || 'nope');
-    // document.body.appendChild(e);
 
     var qs = '';
     try {
@@ -68,12 +48,69 @@
         document.body.classList.add('offline');
     };
     i.src = iframeSrc;
-    //document.body.appendChild(i);
+    document.body.appendChild(i);
+
+    document.querySelector('iframe').onload = function() {
+        log('onsuccess');
+        sendActivities();
+    };
+
+
+function log(m) {
+    div = document.createElement('div');
+    div.innerHTML = m;
+    document.body.appendChild(div);
+}
+
+    var webactivities = !!(window.setMessageHandler || window.mozSetMessageHandler);
+
+    // function log(m) {
+    //     document.body.innerHTML += m + '<br>';
+    // }
+
+// setTimeout(function() {
+// document.querySelector('iframe').contentWindow.postMessage('blahhhh', MKT_URL);
+// }, 3000);
+    log('activity support:' + !!webactivities);
+    //if (webactivities) {
+        navigator.mozSetMessageHandler('activity', function(req) {
+            log('activity name: ' + req.source.name);
+            log('activity data: ' + req.source.data);
+            activitiesToSend.push({name: req.source.name, data: req.source.data});
+            // setTimeout(function() {
+            //     document.querySelector('iframe').contentWindow.postMessage({name: req.source.name, data: req.source.data}, MKT_URL)
+            // }, 3000);
+        });
+    //}
+
+    var postMessaged = false;
+
+    window.addEventListener('message', function(e) {
+        // if (e.origin !== MKT_URL) {
+        //     console.log('Ignored post message from ' + e.origin + ': ' + e.data);
+        //     return;
+        // }
+        // Receive postMessage from the packaged app and do something with it.
+        if (postMessaged) {
+            //return;
+        }
+        log('Handled post message from ' + e.origin + ': ' + e.data);
+        if (e.data == 'loaded') {
+            log('activitiesToSend = ' + activitiesToSend.length);
+            sendActivities();
+        }
+    }, false);
+
+log('yooo origin:' + location.href);
+
+// pass origin and let Marketplace trust us since "origin" can't be used until 1.1.
 
     // When refocussing the app, toggle the iframe based on `navigator.onLine`.
     window.addEventListener('focus', toggleOffline, false);
 
     function toggleOffline(init) {
+        log('toggleOffline');
+        return;
         console.log('Checking for network connection...')
         if (navigator.onLine === false) {
             // Hide iframe.

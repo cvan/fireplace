@@ -26,6 +26,7 @@ iframe {
   position: absolute;
   top: 0;
   width: 100%;
+  /*opacity: .1;*/
 }
 
 .offline-screen,
