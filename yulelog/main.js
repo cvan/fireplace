@@ -1,5 +1,48 @@
 (function() {
 
+    // No trailing slash, please.
+    var MKT_URL = 'https://marketplace.firefox.com';
+
+    var webactivities = !!(window.setMessageHandler || window.mozSetMessageHandler);
+
+    if (navigator.mozSetMessageHandler) {
+        // Load up an app.
+        navigator.mozSetMessageHandler('marketplace-app', function(req) {
+            var url = '';
+            var slug = req.source.data.slug;
+            var manifest_url = req.source.data.manifest_url || req.source.data.manifest;
+            if (slug) {
+                url = '/app/' + slug + '?src=webactivities';
+            } else if (manifest_url) {
+                url = '/search/?q=:manifest=' + manifest_url + '&src=webactivities';
+            }
+            e = document.createElement('div');
+            e.innerHTML = url;
+            document.body.appendChild(e);
+        });
+
+        // Load up the page to leave a rating for the app.
+        navigator.mozSetMessageHandler('marketplace-app-rating', function(req) {
+            var slug = req.source.data.slug;
+            z.page.trigger('navigate', [urls.reverse('app/ratings/add', [slug])]);
+        });
+
+        // Load up a category page.
+        navigator.mozSetMessageHandler('marketplace-category', function(req) {
+            var slug = req.source.data.slug;
+            z.page.trigger('navigate', [urls.reverse('category', [slug])]);
+        });
+
+        // Load up a search.
+        navigator.mozSetMessageHandler('marketplace-search', function(req) {
+            var query = req.source.data.query;
+            z.page.trigger('search', {q: query});
+        });
+    }
+    // e = document.createElement('div');
+    // e.innerHTML = 'no' + (navigator.mozSetMessageHandler || 'nope');
+    // document.body.appendChild(e);
+
     var qs = '';
     try {
         var conn = navigator.mozMobileConnection;
@@ -18,14 +61,14 @@
     } catch(e) {
         // Fail gracefully if `navigator.mozMobileConnection` gives us problems.
     }
-    var iframeSrc = 'https://marketplace.firefox.com/' + qs;
+    var iframeSrc = MKT_URL + '/' + qs;
     var i = document.createElement('iframe');
     i.seamless = true;
     i.onerror = function() {
         document.body.classList.add('offline');
     };
     i.src = iframeSrc;
-    document.body.appendChild(i);
+    //document.body.appendChild(i);
 
     // When refocussing the app, toggle the iframe based on `navigator.onLine`.
     window.addEventListener('focus', toggleOffline, false);
