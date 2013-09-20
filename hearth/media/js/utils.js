@@ -1,4 +1,7 @@
-define('utils', ['jquery', 'underscore'], function($, _) {
+define('utils', ['jquery', 'l10n', 'underscore'], function($, l10n, _) {
+
+    var gettext = l10n.gettext;
+
     _.extend(String.prototype, {
         strip: function(str) {
             // Strip all whitespace.
@@ -41,6 +44,26 @@ define('utils', ['jquery', 'underscore'], function($, _) {
         }
         return s.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;')
                 .replace(/'/g, '&#39;').replace(/"/g, '&#34;');
+    }
+
+    function slugify(s, limit) {
+        var value = (s || '').toLowerCase();
+        value = value.replace(/[ _]/g, '-')
+                     .replace(/[^-\w]/g, '')
+                     .replace(/^0/, gettext('zero'))
+                     .replace(/^1/, gettext('one'))
+                     .replace(/^2/, gettext('two'))
+                     .replace(/^3/, gettext('three'))
+                     .replace(/^4/, gettext('four'))
+                     .replace(/^5/, gettext('five'))
+                     .replace(/^6/, gettext('six'))
+                     .replace(/^7/, gettext('seven'))
+                     .replace(/^8/, gettext('eight'))
+                     .replace(/^9/, gettext('nine'));
+        if (limit) {
+            value = value.substr(0, limit);  // Cap the slug length.
+        }
+        return value;
     }
 
     function fieldFocused(e) {
@@ -177,6 +200,7 @@ define('utils', ['jquery', 'underscore'], function($, _) {
         'getVars': getVars,
         'initCharCount': initCharCount,
         'querystring': querystring,
+        'slugify': slugify,
         'urlencode': urlencode,
         'urlparams': urlparams,
         'urlunparam': urlunparam,
