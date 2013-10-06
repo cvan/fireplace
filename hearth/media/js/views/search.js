@@ -62,6 +62,9 @@ define('views/search',
             if (!value) return;
             if (value[0] === ':') {
                 value = value.slice(1);
+                if (value === 'wallpapers') {
+                    window.location = '/wallpapers';
+                }
                 if (value === 'hosted' || value === 'packaged' ||
                     value === 'privileged') {
                     query.app_type = append(query.app_type, value);

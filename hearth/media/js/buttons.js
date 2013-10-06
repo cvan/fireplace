@@ -36,13 +36,13 @@ define('buttons',
     });
 
     function install(product, $button) {
+        product = {};
+        product.manifest_url = $button.attr('data-manifest_url');
         var product_name = product.name;
         console.log('Install requested for', product_name);
 
         // TODO: Have the API possibly return this (bug 889501).
-        product.receipt_required = (product.premium_type != 'free' &&
-                                    product.premium_type != 'free-inapp' &&
-                                    !settings.simulate_nav_pay);
+        product.receipt_required = false;
 
         // If it's a paid app, ask the user to sign in first.
         if (product.receipt_required && !user.logged_in()) {
@@ -253,8 +253,19 @@ define('buttons',
         return def.promise();
     }
 
-    z.page.on('click', '.product.launch', launchHandler)
-          .on('click', '.button.product:not(.launch):not(.incompatible)', _handler(install));
+    function closeHandler(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.top.close();
+    }
+
+    z.page.on('click', '.product.launch:not(.wallpaper)', launchHandler)
+          .on('click', '.wallpapers .product.launch', closeHandler)
+          .on('click', '.button.product:not(.launch):not(.incompatible)', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            install({}, $(this))
+        });
 
     function get_button(manifest_url) {
         return $('.button[data-manifest_url="' + manifest_url.replace(/"/, '\\"') + '"]');
@@ -271,7 +282,7 @@ define('buttons',
         z.apps[manifest_url] = installer;
 
         // L10n: "Launch" as in "Launch the app"
-        setButton($button, gettext('Launch'), 'launch install');
+        setButton($button, gettext('Exit App'), 'launch install');
     }
 
     return {
