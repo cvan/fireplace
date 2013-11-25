@@ -14,6 +14,11 @@ define('user',
         token = storage.getItem('user');
         log.unmention(token);
         settings = JSON.parse(storage.getItem('settings') || '{}');
+
+        // Fo'get 'bout legacy `region` and `carrier` values in localStorage.
+        delete settings.region;
+        delete settings.carrier;
+
         permissions = JSON.parse(storage.getItem('permissions') || '{}');
     }
 
@@ -72,7 +77,13 @@ define('user',
     function save_settings() {
         if (save_to_ls) {
             console.log('Saving settings to localStorage');
-            storage.setItem('settings', JSON.stringify(settings));
+
+            // Save everything except `region` and `carrier` in localStorage.
+            var settings_to_save = _.clone(settings);
+            delete settings_to_save.region;
+            delete settings_to_save.carrier;
+
+            storage.setItem('settings', JSON.stringify(settings_to_save));
         } else {
             console.log('Settings not saved to localStorage');
         }
