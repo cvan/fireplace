@@ -35,18 +35,67 @@
 
     var qs = '';
     try {
-        var conn = navigator.mozMobileConnection;
+        // navigator.mozMobileConnection is the legacy API.
+        // navigator.mozMobileConnectionS is the new API.
+
+        var conn = window.navigator.mozMobileConnection;
         if (conn) {
+            log('navigator.mozMobileConnection available');
             // `MCC`: Mobile Country Code
             // `MNC`: Mobile Network Code
             // `lastKnownHomeNetwork`: `{MCC}-{MNC}` (SIM's origin)
             // `lastKnownNetwork`: `{MCC}-{MNC}` (could be different network if roaming)
             var network = (conn.lastKnownHomeNetwork || conn.lastKnownNetwork || '-').split('-');
             qs = '?mcc=' + (network[0] || '') + '&mnc=' + (network[1] || '');
-            log('lastKnownNetwork', conn.lastKnownNetwork);
-            log('lastKnownHomeNetwork', conn.lastKnownHomeNetwork);
-            log('MCC: "' + network[0] + '"');
-            log('MNC: "' + network[1] + '"');
+            log('navigator.mozMobileConnection.lastKnownNetwork:',
+                conn.lastKnownNetwork);
+            log('navigator.mozMobileConnection.lastKnownHomeNetwork:',
+                conn.lastKnownHomeNetwork);
+            log('MCC: "' + network[0] + '", MNC: "' + network[1] + '"');
+        } else {
+            log('navigator.mozMobileConnection unavailable');
+        }
+        conn = window.navigator.mozMobileConnections;
+        if (conn) {
+            log('navigator.mozMobileConnections available');
+            /*
+                Example format:
+
+                [
+                    {
+                        data: {
+                            network: {
+                                mcc: '260',
+                                mnc: '02'
+                            }
+                        }
+                    },
+                    {
+                        data: {
+                            network: {
+                                mcc: '734',
+                                mnc: '4'
+                            }
+                        }
+                    }
+                ]
+
+            */
+            conn = window.navigator.mozMobileConnections;
+            var mccs = [];
+            var connData;
+            for (var i = 0; i < conn.length; i++) {
+                connData = conn[i].data;
+                if (connData && connData.network) {
+                    mccs.push({mcc: connData.network.mcc,
+                               mnc: connData.network.mnc});
+                }
+            }
+            mccs = JSON.stringify(mccs);
+            qs = '?mccs=' + mccs;
+            log('MCCs: ' + mccs);
+        } else {
+            log('navigator.mozMobileConnections unavailable');
         }
     } catch(e) {
         // Fail gracefully if `navigator.mozMobileConnection` gives us problems.

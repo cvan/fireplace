@@ -235,6 +235,7 @@ define('mobilenetwork',
     };
 
     function getNetwork(mcc, mnc) {
+        console.log('[mobilenetwork.getNetwork] Trying MCC = ', mcc, ', MNC = ', mnc);
         // Look up region and carrier from MCC (Mobile Country Code)
         // and MNC (Mobile Network Code).
 
@@ -306,14 +307,24 @@ define('mobilenetwork',
         // Get mobile region and carrier information passed via querystring.
         var mcc = GET.mcc;
         var mnc = GET.mnc;
+        var mccs = [];
+        try {
+            mccs = JSON.parse(GET.mccs || '[]');
+        } catch(e) {
+            mccs = [];
+        }
 
         var carrier = GET.carrier || user.get_setting('carrier') || null;
 
         try {
             // When Fireplace is served as a privileged packaged app (and not
             // served via Yulelog) our JS will have direct access to this API.
+
+            // navigator.mozMobileConnection is the legacy API.
+            // navigator.mozMobileConnectionS is the new API.
             var conn = navigator.mozMobileConnection;
             if (conn) {
+                console.log('navigator.mozMobileConnection available');
                 // `MCC`: Mobile Country Code
                 // `MNC`: Mobile Network Code
                 // `lastKnownHomeNetwork`: `{MCC}-{MNC}` (SIM's origin)
@@ -321,11 +332,58 @@ define('mobilenetwork',
                 var lastNetwork = (conn.lastKnownHomeNetwork || conn.lastKnownNetwork || '-').split('-');
                 mcc = lastNetwork[0];
                 mnc = lastNetwork[1];
-                console.log('lastKnownNetwork', conn.lastKnownNetwork);
-                console.log('lastKnownHomeNetwork', conn.lastKnownHomeNetwork);
-                console.log('MCC = ' + mcc + ', MNC = ' + mnc);
+                console.log('navigator.mozMobileConnection.lastKnownNetwork:',
+                            conn.lastKnownNetwork);
+                console.log('navigator.mozMobileConnection.lastKnownHomeNetwork:',
+                            conn.lastKnownHomeNetwork);
+                console.log('MCC:', mcc, ', MNC:', mnc);
             } else {
-                console.warn('navigator.mozMobileConnection unavailable');
+                console.log('navigator.mozMobileConnection unavailable');
+            }
+            conn = window.navigator.mozMobileConnections;
+            if (conn) {
+                console.log('navigator.mozMobileConnections available');
+                /*
+                    Example format:
+
+                    [
+                        {
+                            data: {
+                                network: {
+                                    mcc: '260',
+                                    mnc: '02'
+                                }
+                            }
+                        },
+                        {
+                            data: {
+                                network: {
+                                    mcc: '734',
+                                    mnc: '4'
+                                }
+                            }
+                        }
+                    ]
+
+                */
+
+                if (mccs.length) {
+                    console.log('Using hardcoded MCCs:', JSON.stringify(mccs));
+                } else {
+                    // If we haven't hardcoded a MCC...
+                    mccs = [];
+                    var connData;
+                    for (var i = 0; i < conn.length; i++) {
+                        connData = conn[i].data;
+                        if (connData && connData.network) {
+                            mccs.push({mcc: connData.network.mcc,
+                                       mnc: connData.network.mnc});
+                        }
+                    }
+                    console.log('Using SIM MCCs:', JSON.stringify(mccs));
+                }
+            } else {
+                console.log('navigator.mozMobileConnections unavailable');
             }
         } catch(e) {
             // Fail gracefully if `navigator.mozMobileConnection` gives us problems.
@@ -340,15 +398,39 @@ define('mobilenetwork',
             // and MNC (Mobile Network Code).
             var network = getNetwork(mcc, mnc);
 
-            newSettings.sim_carrier = network.carrier;
-            newSettings.sim_region = network.region;
-
-            region = network.region;
+            region = newSettings.sim_region = network.region;
+            carrier = newSettings.sim_carrier = network.carrier;
 
             if (carrier !== network.carrier) {
-                persistent_console.log('Carrier changed by SIM:', carrier, '→', network.carrier);
+                persistent_console.log(
+                    'Carrier changed by SIM:', carrier, '→', network.carrier);
             }
-            carrier = network.carrier;
+        }
+
+        if (mccs.length) {
+            conn = window.navigator.mozMobileConnections;
+            var pair;
+            for (var i = 0; i < mccs.length; i++) {
+                pair = mccs[i];
+
+                // Look up region and carrier from MCC (Mobile Country Code)
+                // and MNC (Mobile Network Code).
+                network = getNetwork(pair.mcc, pair.mnc);
+
+                region = newSettings.sim_region = network.region;
+                carrier = newSettings.sim_carrier = network.carrier;
+
+                if (carrier !== network.carrier) {
+                    persistent_console.log(
+                        'Carrier changed by SIM:', carrier,
+                        '→', network.carrier);
+                }
+
+                // If there's a region, stop looking.
+                if (region) {
+                    break;
+                }
+            }
         }
 
         var lastRegion = user.get_setting('last_region');
