@@ -97,6 +97,7 @@ define('requests',
     }
 
     function get(url, nocache, persistent) {
+        persistent = true;
         var cached;
         if (cache.has(url) && !nocache) {
             console.log('GETing from cache', url);
@@ -114,6 +115,7 @@ define('requests',
     }
 
     function _get(url, nocache, persistent) {
+        persistent = true;
         console.log('GETing', url);
         return ajax('GET', url).done(function(data, xhr) {
             console.log('GOT', url);
