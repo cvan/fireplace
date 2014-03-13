@@ -1,9 +1,12 @@
-define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], function(defer, log, requests, settings, _) {
+define('models', ['cache', 'defer', 'log', 'requests', 'settings', 'underscore'], function(cache, defer, log, requests, settings, _) {
 
     var console = log('model');
 
     // {'type': {'<id>': object}}
-    var data_store = {};
+    var data_store = cache;
+    if (settings.offline_cache_enabled) {
+        data_store = cache.persist;
+    }
 
     var prototypes = settings.model_prototypes;
 
@@ -12,9 +15,9 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
             throw new Error('Unknown model "' + type + '"');
         }
 
-        if (!(type in data_store)) {
+        if (!data_store.has(type)) {
             // Where's defaultdict when you need it
-            data_store[type] = {};
+            data_store.set(type, {});
         }
 
         var key = prototypes[type];
@@ -22,7 +25,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
         function cast(data) {
             function do_cast(data) {
                 var keyed_value = data[key];
-                data_store[type][keyed_value] = data;
+                data_store.set(type + ':' + keyed_value, data);
                 console.log('Stored ' + keyed_value + ' as ' + type);
             }
             if (_.isArray(data)) {
@@ -34,7 +37,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
 
         function uncast(object) {
             function do_uncast(object) {
-                return data_store[type][object[key]];
+                return data_store.get(type + ':' + object[key]);
             }
             if (_.isArray(object)) {
                 return object.map(do_uncast);
@@ -46,11 +49,12 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
             getter = getter || requests.get;
 
             if (keyed_value) {
-                if (keyed_value in data_store[type]) {
+                var cached = data_store.get(type + ':' + keyed_value);
+                if (cached) {
                     // Call the `.done()` function back in `request()`.
                     console.log('Found ' + type + ' with key ' + keyed_value);
                     return defer.Deferred()
-                                .resolve(data_store[type][keyed_value])
+                                .resolve(cached)
                                 .promise({__cached: true});
                 }
 
@@ -62,24 +66,23 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
 
         function lookup(keyed_value, by) {
             if (by) {
-                for (var key in data_store[type]) {
-                    var item = data_store[type][key];
-                    if (by in item && item[by] === keyed_value) {
-                        return item;
-                    }
+                var item = data_store.get(type + ':' + key);
+                if (by in item && item[by] === keyed_value) {
+                    return item;
                 }
                 return;
             }
-            if (keyed_value in data_store[type]) {
+            if (keyed_value in data_store.get(type)) {
                 console.log('Found ' + type + ' with lookup key ' + keyed_value);
-                return data_store[type][keyed_value];
+                return data_store.get(type + ':' + keyed_value);
             }
 
             console.log(type + ' cache miss for key ' + keyed_value);
         }
 
         function purge() {
-            data_store[type] = [];
+            // TODO: IDK?
+            data_store.purge(type);
         }
 
         function del(keyed_value, by) {
@@ -91,7 +94,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
                 }
                 keyed_value = instance[key];
             }
-            delete data_store[type][keyed_value];
+            data_store.bust(type + ':' + keyed_value);
         }
 
         return {
