@@ -48,14 +48,14 @@ define('cache', ['log', 'rewriters', 'storage'], function(log, rewriters, storag
         get: function(key) {
             if (has(key)) {
                 return get(key);
-            } else if (key in storageKeys) {
-                var val = storage.getItem(persistentCachePrefix + key);
+            } else {
+                var val = JSON.parse(storage.getItem(persistentCachePrefix + key));
                 set(key, val);
                 return val;
             }
         },
         set: function(key, val) {
-            storage.setItem(persistentCachePrefix + key, val);
+            storage.setItem(persistentCachePrefix + key, JSON.stringify(val));
             set(key, val);
         },
         bust: function(key) {

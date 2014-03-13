@@ -1,6 +1,6 @@
 define('requests',
-    ['cache', 'defer', 'log', 'utils'],
-    function(cache, defer, log, utils) {
+    ['cache', 'defer', 'log', 'settings', 'utils'],
+    function(cache, defer, log, settings, utils) {
 
     var console = log('req');
 
@@ -59,7 +59,7 @@ define('requests',
                 return error();
             }
 
-            def.resolve(response(xhr), xhr);
+            def.resolve(response(xhr, data), xhr);
         }, false);
 
         xhr.addEventListener('error', error, false);
@@ -98,30 +98,47 @@ define('requests',
 
     function get(url, nocache, persistent) {
         var cached;
-        if (cache.has(url) && !nocache) {
-            console.log('GETing from cache', url);
-            cached = cache.get(url);
-        } else if (cache.persist.has(url) && persistent && !nocache) {
-            console.log('GETing from persistent cache', url);
-            cached = cache.persist.get(url);
+        if (!nocache) {
+            if (settings.offline_cache_enabled) {
+                persistent = true;
+            }
+            if (cache.has(url)) {
+                // When we can, we always fetch from local, in-memory cache.
+                console.log('GETing from cache', url);
+                cached = cache.get(url);
+            } else if (cache.persist.has(url) && persistent && !nocache) {
+                // If there's a local cache miss, try the persistent cache.
+                console.log('GETing from persistent cache', url);
+                cached = cache.persist.get(url);
+            }
         }
-        if (cached) {
-            return defer.Deferred()
-                        .resolve(cached)
-                        .promise({__cached: true});
-        }
-        return _get.apply(this, arguments, persistent);
-    }
 
-    function _get(url, nocache, persistent) {
-        console.log('GETing', url);
-        return ajax('GET', url).done(function(data, xhr) {
+        var def;
+
+        if (cached) {
+            def = defer.Deferred()
+                       .resolve(cached)
+                       .promise({__cached: true});
+            if (!settings.offline_cache_enabled) {
+                // If we're doing offline persistent cache, we still want to
+                // make the request so the cache gets updated. Otherwise,
+                // we have what we need from the local cache, so let's stop.
+                return def;
+            }
+
+        }
+
+        ajax('GET', url).done(function(data, xhr) {
             console.log('GOT', url);
             if (!nocache) {
                 cache.set(url, data);
                 if (persistent) cache.persist.set(url, data);
             }
         });
+
+        if (settings.offline_cache_enabled) {
+            return def;
+        }
     }
 
     function handle_errors(xhr, type, status) {
