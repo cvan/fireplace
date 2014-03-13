@@ -121,9 +121,10 @@ define('builder',
                             data = data[signature.pluck];
                         }
                         // `as` passes the data to the models for caching.
-                        if (data && !dont_cast && 'as' in signature) {
+                        if (data && !dont_cast && 'as' in signature && (!'__casted' in data)) {
                             console.groupCollapsed('Casting ' + signature.as + 's to model cache...');
                             models(signature.as).cast(data);
+                            data.__casted = true;
                             console.groupEnd();
                         }
                         var content = '';
@@ -151,7 +152,8 @@ define('builder',
                         // This will run synchronously.
                         request.done(function(data) {
                             context.ctx.response = data;
-                            rendered = get_result(data, true);
+                            console.error('typeof', typeof data)
+                            rendered = get_result(data);  // BASTA: why was this `true` for `dont_cast`?
 
                             // Now update the response with the values from the model cache
                             // For details, see bug 870447
@@ -168,6 +170,9 @@ define('builder',
                                 }
                                 if (Array.isArray(resp)) {
                                     for (var i = 0; i < resp.length; i++) {
+                                        // BASTA: changing this to just `resp[i]`
+                                        // seems to make the cache get the correct
+                                        // values in the araay
                                         resp[i] = uncaster(resp[i]);
                                     }
                                 } else if (plucked) {
@@ -193,11 +198,13 @@ define('builder',
                     }
 
                     request.done(function(data) {
+                        console.error('request done');
                         var el = document.getElementById(uid);
                         if (!el) {
                             return;
                         }
                         context.ctx.response = data;
+                        console.error('typeof', typeof data)
                         var content = get_result(data);
                         if (replace) {
                             parse_and_replace(content, replace);
@@ -286,6 +293,7 @@ define('builder',
         this.terminate = pool.abort;
 
         this.finish = function() {
+            console.error('pool finished')
             pool.always(function() {
                 fire(page, 'loaded');
             });

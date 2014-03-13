@@ -14,6 +14,9 @@ define('settings', ['l10n', 'settings_local', 'underscore'], function(l10n, sett
     // 'pro' even when not in "preview mode". see bug 980124 and bug 979932
     param_blacklist = ['pro'];
 
+    var offline_cache_enabled = (
+        window.location.search.indexOf('cache=false') === -1);
+
     return _.defaults(base_settings, {
         app_name: 'fireplace',
         init_module: 'marketplace',
@@ -57,6 +60,7 @@ define('settings', ['l10n', 'settings_local', 'underscore'], function(l10n, sett
         upsell_enabled: true,
         newsletter_enabled: true,
         cache_rewriting_enabled: true,
+        offline_cache_enabled: offline_cache_enabled,
         potatolytics_enabled: false,
 
         // Waffle flags/switches from the server.

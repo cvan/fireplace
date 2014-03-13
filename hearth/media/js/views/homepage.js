@@ -33,6 +33,9 @@ define('views/homepage',
             app_cast: app_models.cast
         }).done(function() {
             var shelf = builder.results.shelf.operator;
+
+            // console.log(JSON.stringify(builder.results.shelf, null, 2))
+
             var $collections = $('.collection.main');
             newsletter.init();
 
@@ -44,6 +47,10 @@ define('views/homepage',
             }
 
             shelf = shelf[0];
+            // if (!shelf) {
+            //     return;
+            // }
+            console.log(shelf)
             if (shelf.image && $collections.length === 2) {
                 $collections.eq(1).closest('.placeholder').hide();
             }

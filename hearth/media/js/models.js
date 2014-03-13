@@ -44,6 +44,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
 
         function get(url, keyed_value, getter) {
             getter = getter || requests.get;
+            console.error('models.get')
 
             if (keyed_value) {
                 if (keyed_value in data_store[type]) {

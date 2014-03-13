@@ -1,9 +1,7 @@
 define('settings_local', [], function() {
-    var origin = window.location.origin || (
-        window.location.protocol + '//' + window.location.host);
     return {
-        api_url: origin,
-        media_url: document.body.getAttribute('data-media'),
+        api_url: 'https://marketplace.firefox.com',
+        media_url: 'https://marketplace.firefox.com/media/',
         tracking_enabled: true,
 
         potatolytics_enabled: false
