@@ -1,9 +1,17 @@
-define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], function(defer, log, requests, settings, _) {
+define('models', ['defer', 'log', 'requests', 'settings', 'storage', 'underscore'], function(defer, log, requests, settings, storage, _) {
 
     var console = log('model');
 
     // {'type': {'<id>': object}}
+    var cache_key = 'model_cache';
     var data_store = {};
+    if (settings.offline_cache_enabled()) {
+        data_store = JSON.parse(storage.getItem(cache_key) || '{}');
+    }
+
+    function save() {
+        storage.setItem(cache_key, JSON.stringify(data_store));
+    }
 
     var prototypes = settings.model_prototypes;
 
@@ -15,6 +23,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
         if (!(type in data_store)) {
             // Where's defaultdict when you need it
             data_store[type] = {};
+            save();
         }
 
         var key = prototypes[type];
@@ -23,6 +32,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
             function do_cast(data) {
                 var keyed_value = data[key];
                 data_store[type][keyed_value] = data;
+                save();
                 console.log('Stored ' + keyed_value + ' as ' + type);
             }
             if (_.isArray(data)) {
@@ -42,7 +52,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
             return do_uncast(object);
         }
 
-        function get(url, keyed_value, getter) {
+        function get(url, keyed_value, getter, nocache, persistent) {
             getter = getter || requests.get;
 
             if (keyed_value) {
@@ -57,7 +67,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
                 console.log(type + ' cache miss for key ' + keyed_value);
             }
 
-            return getter(url);
+            return getter(url, nocache, persistent);
         }
 
         function lookup(keyed_value, by) {
@@ -80,6 +90,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
 
         function purge() {
             data_store[type] = [];
+            save();
         }
 
         function del(keyed_value, by) {
@@ -92,6 +103,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
                 keyed_value = instance[key];
             }
             delete data_store[type][keyed_value];
+            save();
         }
 
         return {

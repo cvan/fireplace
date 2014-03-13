@@ -1,8 +1,41 @@
-define('cache', ['log', 'rewriters', 'storage'], function(log, rewriters, storage) {
+define('cache',
+    ['log', 'rewriters', 'settings', 'storage'],
+    function(log, rewriters, settings, storage) {
 
     var console = log('cache');
 
+    var cache_key = 'request_cache';
     var cache = {};
+    if (settings.offline_cache_enabled()) {
+        cache = JSON.parse(storage.getItem(cache_key) || '{}');
+    }
+
+    function save() {
+        if (!settings.offline_cache_enabled()) {
+            return;
+        }
+
+        var cacheToSave = {};
+        var doSave = false;
+
+        Object.keys(cache).forEach(function (key) {
+            doSave = false;
+
+            // Check if this URL is allowed to be cached.
+            settings.cache_whitelist.some(function (pattern) {
+                if ((new RegExp(pattern)).test(key)) {
+                    return doSave = true;
+                }
+            });
+
+            // If it is, let's add it to the list to persist.
+            if (doSave) {
+                cacheToSave[key] = cache[key];
+            }
+        });
+
+        storage.setItem(cache_key, JSON.stringify(cacheToSave));
+    }
 
     function has(key) {
         return key in cache;
@@ -21,6 +54,7 @@ define('cache', ['log', 'rewriters', 'storage'], function(log, rewriters, storag
                 delete cache[key];
             }
         }
+        save();
     }
 
     function set(key, value) {
@@ -33,6 +67,7 @@ define('cache', ['log', 'rewriters', 'storage'], function(log, rewriters, storag
             }
         }
         cache[key] = value;
+        save();
     }
 
     function bust(key) {
@@ -40,6 +75,7 @@ define('cache', ['log', 'rewriters', 'storage'], function(log, rewriters, storag
         if (key in cache) {
             delete cache[key];
         }
+        save();
     }
 
     var persistentCachePrefix = 'cache.persist::';

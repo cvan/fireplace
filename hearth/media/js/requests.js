@@ -1,6 +1,6 @@
 define('requests',
-    ['cache', 'defer', 'log', 'utils'],
-    function(cache, defer, log, utils) {
+    ['cache', 'defer', 'log', 'settings', 'utils'],
+    function(cache, defer, log, settings, utils) {
 
     var console = log('req');
 
@@ -96,32 +96,60 @@ define('requests',
         return def;
     }
 
+    // During a single session, we never want to fetch the same URL more than
+    // once. Because our persistent offline cache does XHRs in the background
+    // to keep the cache fresh, we want to do that only once per session. In
+    // order to do all this magic, we have to keep an array of all of the URLs
+    // we hit per session.
+    var fresh_urls = [];
+
     function get(url, nocache, persistent) {
+        var cache_offline = persistent && settings.offline_cache_enabled();
+
         var cached;
         if (cache.has(url) && !nocache) {
             console.log('GETing from cache', url);
             cached = cache.get(url);
-        } else if (cache.persist.has(url) && persistent && !nocache) {
-            console.log('GETing from persistent cache', url);
-            cached = cache.persist.get(url);
         }
-        if (cached) {
-            return defer.Deferred()
-                        .resolve(cached)
-                        .promise({__cached: true});
-        }
-        return _get.apply(this, arguments, persistent);
-    }
 
-    function _get(url, nocache, persistent) {
+        var def_cached;
+        if (cached) {
+            def_cached = defer.Deferred()
+                              .resolve(cached)
+                              .promise({__cached: true});
+            if (!cache_offline || fresh_urls.indexOf(url) !== -1) {
+                // If we don't need to make an XHR in the background to update
+                // the cache, then let's bail now.
+                return def_cached;
+            }
+        }
+
+        // TODO: Do an TTL/LRU cache (48 hours).
+        // TODO: Do not cache search.
+        // TODO: Do this in a web worker.
+
         console.log('GETing', url);
-        return ajax('GET', url).done(function(data, xhr) {
+        fresh_urls.push(url);
+        var def_ajax = ajax('GET', url).done(function(data, xhr) {
             console.log('GOT', url);
             if (!nocache) {
                 cache.set(url, data);
-                if (persistent) cache.persist.set(url, data);
+            }
+            if (cached && cache_offline) {
+                console.log('Updating request cache', url);
             }
         });
+
+        if (cached && cache_offline) {
+            // If the response was cached, we still want to fire off the
+            // AJAX request so the cache can get updated in the background,
+            // but let's resolve this deferred with the cached response
+            // so the request pool can get closed and the builder can render
+            // the template for the `defer` block.
+            return def_cached;
+        }
+
+        return def_ajax;
     }
 
     function handle_errors(xhr, type, status) {
