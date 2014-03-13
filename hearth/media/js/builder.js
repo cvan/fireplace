@@ -102,9 +102,13 @@ define('builder',
                 var injector = function(url, replace, extract) {
                     var request;
                     if ('as' in signature && 'key' in signature) {
+                        // console.error('>0<');
                         request = models(signature.as).get(url, signature.key, pool.get);
+                        // console.error('>1<');
                     } else {
+                        // console.error('>>0<<');
                         request = pool.get(url);
+                        // console.error('>>1<<');
                     }
 
                     if ('id' in signature) {
@@ -131,7 +135,9 @@ define('builder',
                             content = empty();
                         } else {
                             context.ctx.this = data;
+                            // console.error('--start--');
                             content = body();
+                            // console.error('--end--');
                         }
                         if (extract) {
                             try {
@@ -150,6 +156,8 @@ define('builder',
                         var rendered;
                         // This will run synchronously.
                         request.done(function(data) {
+                            // console.error('__cached', data);
+
                             context.ctx.response = data;
                             rendered = get_result(data, true);
 
@@ -191,6 +199,8 @@ define('builder',
                         }
                         return request;
                     }
+
+// console.error('NOT __cached');
 
                     request.done(function(data) {
                         var el = document.getElementById(uid);

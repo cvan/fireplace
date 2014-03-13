@@ -1,6 +1,6 @@
 define('login',
-    ['capabilities', 'defer', 'jquery', 'log', 'notification', 'settings', 'underscore', 'urls', 'user', 'utils', 'requests', 'z'],
-    function(capabilities, defer, $, log, notification, settings, _, urls, user, utils, requests, z) {
+    ['cache', 'capabilities', 'defer', 'jquery', 'log', 'notification', 'settings', 'underscore', 'urls', 'user', 'utils', 'requests', 'z'],
+    function(cache, capabilities, defer, $, log, notification, settings, _, urls, user, utils, requests, z) {
 
     var console = log('login');
 
@@ -23,6 +23,7 @@ define('login',
 
     }).on('click', '.logout', function(e) {
         e.preventDefault();
+        cache.clear_signed();
         user.clear_token();
         z.body.removeClass('logged-in');
         z.page.trigger('reload_chrome').trigger('before_logout');
@@ -199,6 +200,7 @@ define('login',
                 }
             });
         }
+
     }).fail(function() {
         notification.notification({
             message: gettext('Persona cannot be reached. Try again later.')
