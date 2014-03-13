@@ -14,6 +14,14 @@ define('settings', ['l10n', 'settings_local', 'underscore'], function(l10n, sett
     // 'pro' even when not in "preview mode". see bug 980124 and bug 979932
     param_blacklist = ['pro'];
 
+    function offline_cache_enabled() {
+        var storage = require('storage');
+        if (storage.getItem('offline_cache_disabled')) {
+            return false;
+        }
+        return window.location.search.indexOf('cache=false') === -1;
+    }
+
     return _.defaults(base_settings, {
         app_name: 'fireplace',
         init_module: 'marketplace',
@@ -45,6 +53,19 @@ define('settings', ['l10n', 'settings_local', 'underscore'], function(l10n, sett
             'dummy': 'id',
             'dummy2': 'id'
         },
+
+        // These are the only URLs that should be cached
+        // (key: URL; value: TTL [time to live] in seconds).
+        // Keep in mind that the cache is always refreshed asynchronously;
+        // these TTLs apply to only when the app is first launched.
+        offline_cache_whitelist: {
+            '.*/fireplace/consumer-info/.*': 60 * 60 * 6,  // 6 hours
+            '.*/fireplace/search/featured/.*': 60 * 60 * 24,  // 1 day
+            '.*/apps/category/.*': 60 * 60 * 24 * 7  // 1 week
+        },
+        offline_cache_enabled: offline_cache_enabled,
+        offline_cache_limit_request: 1024 * 3,
+        offline_cache_limit_model: 1024 * 2,
 
         // Error template paths. Used by builder.js.
         fragment_error_template: 'errors/fragment.html',

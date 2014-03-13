@@ -1,9 +1,32 @@
-define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], function(defer, log, requests, settings, _) {
+define('models',
+    ['defer', 'log', 'requests', 'settings', 'storage', 'underscore', 'z'],
+    function(defer, log, requests, settings, storage, _, z) {
 
     var console = log('model');
 
     // {'type': {'<id>': object}}
+    var cache_key = 'model_cache';
     var data_store = {};
+
+    if (settings.offline_cache_enabled()) {
+        data_store = JSON.parse(storage.getItem(cache_key) || '{}');
+    }
+    window.data_store = data_store;
+
+    // Persist the model cache.
+    // window.addEventListener('beforeunload', save, false);
+    // z.page.on('loaded', save);
+
+    function save() {
+        if (!settings.offline_cache_enabled()) {
+            return;
+        }
+        var cacheToSave = JSON.stringify(data_store);
+        // if (storage.getItem(cache_key) !== cacheToSave) {
+            storage.setItem(cache_key, cacheToSave);
+            console.log('Persisting model cache');
+        // }
+    }
 
     var prototypes = settings.model_prototypes;
 
@@ -20,6 +43,8 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
         var key = prototypes[type];
 
         function cast(data) {
+            console.error('cast', type, data);
+
             function do_cast(data) {
                 var keyed_value = data[key];
                 data_store[type][keyed_value] = data;
@@ -56,6 +81,8 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
 
                 console.log(type + ' cache miss for key ' + keyed_value);
             }
+            console.error('get...', url, keyed_value, getter
+                )
 
             return getter(url);
         }
@@ -96,6 +123,7 @@ define('models', ['defer', 'log', 'requests', 'settings', 'underscore'], functio
 
         return {
             cast: cast,
+            save: save,
             uncast: uncast,
             get: get,
             lookup: lookup,
