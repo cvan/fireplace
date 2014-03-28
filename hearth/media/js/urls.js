@@ -71,7 +71,18 @@ define('urls',
             console.error('Invalid API endpoint: ' + endpoint);
             return '';
         }
-        var url = settings.api_url + format.format(api_endpoints[endpoint], args || []);
+
+        var host = settings.api_url;
+        var path = format.format(api_endpoints[endpoint], args || []);
+
+        // Use CDN for a whitelisted set of unsigned API endpoints.
+        Object.keys(settings.api_cdn_whitelist).some(function (pattern) {
+            if ((new RegExp(pattern)).test(path)) {
+                return host = settings.cdn_url;
+            }
+        });
+
+        var url = host + path;
         if (params) {
             return require('utils').urlparams(url, params);
         }
