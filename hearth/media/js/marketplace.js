@@ -8,7 +8,7 @@ require.config({
     enforceDefine: true,
     paths: {
         'flipsnap': 'lib/flipsnap',
-        'jquery': 'lib/jquery-2.0.2',
+        'jquery': 'lib/jquery-2.1.1-custom',
         'underscore': 'lib/underscore',
         'nunjucks': 'lib/nunjucks',
         'nunjucks.compat': 'lib/nunjucks.compat',

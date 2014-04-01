@@ -141,3 +141,11 @@ make test
 ## Local Development With Nginx
 
 See [Using Fireplace with Zamboni](https://github.com/mozilla/fireplace/wiki/Using-Fireplace-with-Zamboni)
+
+
+## jQuery
+
+We're using a custom build of [jQuery](https://github.com/jquery/jquery/)
+to reduce the file size. It was generated using jQuery's grunt task:
+
+  grunt custom:-ajax,-deprecated,-effects,-event/alias,-offset,-wrap,-core/ready,-sizzle
