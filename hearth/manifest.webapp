@@ -1,11 +1,11 @@
 {
     "name": "Marketplace",
-    "launch_path": "/index.html",
+    "launch_path": "/app.html",
     "activities": {
-        "marketplace-search": {"href": "/index.html"},
-        "marketplace-category": {"href": "/index.html"},
-        "marketplace-app": {"href": "/index.html"},
-        "marketplace-app-rating": {"href": "/index.html"}
+        "marketplace-search": {"href": "/app.html"},
+        "marketplace-category": {"href": "/app.html"},
+        "marketplace-app": {"href": "/app.html"},
+        "marketplace-app-rating": {"href": "/app.html"}
     },
     "default_locale": "en-US",
     "description": "The Firefox Marketplace",

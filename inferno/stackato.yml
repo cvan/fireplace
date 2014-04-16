@@ -1,4 +1,4 @@
-name: inferno
+name: inferno-webhook
 framework:
     type: node
 

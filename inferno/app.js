@@ -1,25 +1,30 @@
-var cp = require('child_process');
 var crypto = require('crypto');
 var fs = require('fs');
-var http = require('https');
 
 var express = require('express');
 var irc = require('irc');
+
+var utils = require('./utils');
+
+
 var app = express();
 
-var client = new irc.Client('irc.mozilla.org', 'infernobot', {channels: ['#amo-bots']});
+//var client = new irc.Client('irc.mozilla.org', 'infernobot', {channels: ['#amo-bots']});
 
-if (!fs.existsSync('build')) {
-    fs.mkdir('build');
-}
-
+app.configure(function () {
+    app.set('port', process.env.VCAP_APP_PORT || process.env.PORT || 3000);
+    app.use(express.logger());
+    app.use(express.compress());
+    app.use(express.json());
+    app.use(express.urlencoded());
+});
 
 app.get('/', function(req, res){
     res.send(fs.readFileSync('templates/index.html') + '');
 });
 
 function getMinifest(type, res) {
-    var manifest = JSON.parse(fs.readFileSync('build/fireplace-master/hearth/manifest.webapp'));
+    var manifest = JSON.parse(fs.readFileSync('build/' + utils.repoDir + '/hearth/manifest.webapp'));
     manifest['package_path'] = 'https://inferno.paas.allizom.org/package.zip?type=' + type;
 
     res.set('Content-Type', 'application/x-web-app-manifest+json');
@@ -67,88 +72,38 @@ app.get('/package.zip', function(req, res){
 });
 
 app.all('/ping', function(req, res) {
-    build(function() {
-        res.send("Fetched, thanks. We'll take it from here.");
+    var rev = 'master';
+    var payload = req.body;
+
+    if (payload) {
+        try {
+            payload = JSON.parse(payload);
+        } catch(e) {
+        }
+        if (payload && payload.after) {
+            rev = payload.after;
+        }
+    }
+
+    console.log('Packaging', rev);
+
+    utils.build(rev).then(function () {
+        res.json({
+            success: true,
+            rev: rev
+        });
+    }).catch(function (err) {
+        res.json({
+            error: true,
+            rev: rev
+        });
     });
 });
 
-function build(fetched_cb) {
+app.listen(app.get('port'), function () {
+    var address = this.address();
+    console.log('Starting server at http://' +
+                address.address + ':' + address.port);
+});
 
-    function cpe(command, options, callback) {
-        function cb(error, stdout, stderr) {
-            if (error) {
-                console.error(error);
-                console.error(stderr);
-            } else {
-                callback();
-            }
-        }
-        var proc = cp.exec(command, options, cb);
-        proc.on('error', function() {console.error(arguments);});
-        proc.on('exit', function(code) {
-            if (code !== 0) {
-                console.error('Bad error code: ', code);
-            }
-        });
-    }
-
-    cpe('rm -rf fireplace-master', {cwd: 'build/'}, git);
-
-    function git() {
-        cpe('git clone git://github.com/mozilla/fireplace.git fireplace-master', {cwd: 'build/'}, compile);
-    }
-
-    var opts = {cwd: 'build/fireplace-master/'};
-    function compile() {
-
-        if (fetched_cb)
-            fetched_cb();
-
-        console.log('Installing deps');
-        cpe('npm install', opts, damper);
-        function damper() {
-            console.log('Running damper compiler');
-            cpe('node damper.js --compile', opts, ssettings);
-        }
-        function ssettings() {
-            console.log('Swapping in inferno settings');
-            cpe('cp hearth/media/js/settings_inferno.js hearth/media/js/settings_local.js', opts, rmfonts);
-        }
-        function rmfonts() {
-            console.log('Removing unnecessary fonts');
-            cpe('rm -f hearth/media/fonts/*.ttf hearth/media/fonts/*.svg hearth/media/fonts/*.eot', opts, rmstyl);
-        }
-        function rmstyl() {
-            console.log('Removing unnecessary stylus files');
-            cpe('rm -f hearth/media/css/*.styl', opts, rmtemplates);
-        }
-        function rmtemplates() {
-            console.log('Removing raw templates and tests');
-            cpe('rm -rf hearth/templates hearth/tests', opts, rmorigicons);
-        }
-        function rmorigicons() {
-            console.log('Removing original region icons');
-            cpe('rm -rf hearth/media/img/icons/regions/originals', opts, zip);
-        }
-        function zip() {
-            console.log('Removing old package.zip');
-            try {
-                fs.unlinkSync('build/package.zip');
-            } catch(e) {
-                console.log('No package.zip to remove');
-            }
-            cpe('cd hearth/ && zip -r ../../package.zip *', opts, finish);
-        }
-    }
-
-    function finish() {
-        console.log('Done');
-        client.say('#amo-bots', "Fireplace was updated on inferno");
-        client.say('#amo-bots', "https://inferno.paas.allizom.org/");
-    }
-}
-
-var port = process.env.VCAP_APP_PORT || 3000;
-app.listen(port);
-
-build();
+// utils.build();

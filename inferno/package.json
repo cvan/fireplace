@@ -10,7 +10,9 @@
     "npm": ">= 1.1.x"
   },
   "dependencies": {
+    "commonplace": "0.2.9",
     "express": "3.1.x",
-    "irc": "0.3.x"
+    "irc": "0.3.x",
+    "es6-promise": "^0.1.1"
   }
 }
