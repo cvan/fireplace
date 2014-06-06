@@ -143,7 +143,11 @@ define('ratings',
             var $ratingModal = $('.compose-review.modal');
             if (!$ratingModal.length) {
                 z.page.append(
-                    nunjucks.env.render('ratings/write.html', {slug: $this.data('app')})
+                    nunjucks.env.render('ratings/write.html', {
+                        slug: $this.data('app'),
+                        support_email: $('.support-email a').attr('href'),
+                        support_url: $('.support-url a').attr('href')
+                    })
                 );
                 $ratingModal = $('.compose-review.modal');
             }

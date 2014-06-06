@@ -4,6 +4,15 @@
     <a href="#" class="close btn-cancel">{{ _('Cancel') }}</a>
   </header>
   <form class="add-review-form form-modal" data-app="{{ slug }}">
+    <p class="review-tip hidden">
+      {% if support_email and support_url %}
+        {{ _('Please do not post bug reports in reviews. <a href="{support_email}">Email the developer</a> or <a href="{support_url}" rel="external">visit the support site</a> to get assistance for this app.', {support_email: support_email, support_url: support_url}) }}
+      {% elif support_email %}
+        {{ _('Please do not post bug reports in reviews. <a href="{support_email}">Email the developer</a> to get assistance for this app.', {support_email: support_email}) }}
+      {% else %}
+        {{ _('Please do not post bug reports in reviews. See the <a href="{support_section}">support section</a> to find out where to get assistance for this app.', {support_section: url('app', [slug]) + '#support'}) }}
+      {% endif %}
+    </p>
     <p class="simple-field rating c">
       <label for="id_rating">{{ _('Rate:') }}</label>
       <select name="rating" id="id_rating" required>

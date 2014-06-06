@@ -15,7 +15,9 @@ define('views/app/ratings/add',
         if (textarea) {
             textarea.focus();
         }
-        
+        // If the user provided a low rating, show a disclaimer.
+        $('.review-tip').toggleClass(
+            'hidden', +$('input[name=rating]:checked').val() > 3);
     }).on('focus', '.compose-review textarea', function() {
         if (window.scrollTo && !caps.widescreen()) {
             window.scrollTo(0, 200);
@@ -31,7 +33,11 @@ define('views/app/ratings/add',
             return;
         }
 
-        builder.start('ratings/write.html', {'slug': slug}).done(function() {
+        builder.start('ratings/write.html', {
+            slug: slug,
+            support_email: $('.support-email a').attr('href'),
+            support_url: $('.support-url a').attr('href')
+        }).done(function() {
             $('.compose-review').removeClass('modal');
         });
 
