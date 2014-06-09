@@ -30,6 +30,11 @@ define('views/app/ratings/edit',
             });
 
             z.page.trigger('navigate', urls.reverse('app', [slug]));
+
+            var appModel = models('app').lookup(slug);
+            var appDetails = appModel ? slug + ':' + appModel.id : slug;
+
+            tracking.trackEvent('App Reviews', 'Edited App Review', appDetails, +_data.rating);
         }).fail(function() {
             forms.toggleSubmitFormState($this, true);
             notify({message: gettext('There was a problem updating your review')});

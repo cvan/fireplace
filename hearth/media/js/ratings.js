@@ -105,7 +105,7 @@ define('ratings',
             if (open_rating){
                 open_rating = false;
                 var $reviewButton = $('.write-review');
-                if ($reviewButton.attr('id') == 'edit-review') {
+                if ($reviewButton.attr('id') === 'edit-review') {
                     // load the edit view.
                     z.page.trigger('navigate', $reviewButton.attr('href'));
                 } else {
@@ -131,6 +131,17 @@ define('ratings',
             return loginToRate();
         }
 
+        var slug = $this.data('app');
+        var appModel = models('app').lookup(slug);
+        var appDetails = appModel ? appModel.slug + ':' + appModel.id : slug;
+
+        // Regardless of screen size, track events.
+        if (this.id === 'edit-review') {
+            tracking.trackEvent('App Reviews', 'Edit Your Review CTA', appDetails);
+        } else {
+            tracking.trackEvent('App Reviews', 'Write a Review CTA', appDetails);
+        }
+
         if (capabilities.widescreen()) {
             // For now, edits go through to the view.
             if (this.id === 'edit-review') {
@@ -143,7 +154,7 @@ define('ratings',
             var $ratingModal = $('.compose-review.modal');
             if (!$ratingModal.length) {
                 z.page.append(
-                    nunjucks.env.render('ratings/write.html', {slug: $this.data('app')})
+                    nunjucks.env.render('ratings/write.html', {slug: slug})
                 );
                 $ratingModal = $('.compose-review.modal');
             }
@@ -210,6 +221,7 @@ define('ratings',
                 return data;
             });
 
+            var appDetails = app;  // Formatted string for Google Analytics event data.
             var new_rating = parseInt(data.rating, 10);
 
             // Update the app model.
@@ -223,6 +235,7 @@ define('ratings',
                     app_model.ratings.average = (app_model.ratings.average * num_ratings + new_rating) / (num_ratings + 1);
                 }
                 app_model.ratings.count += 1;
+                appDetails = app_model.slug + ':' + app_model.id;
             }
 
             // Set the user's review in the request cache.
@@ -238,14 +251,8 @@ define('ratings',
             notify({message: gettext('Your review was posted')});
             z.page.trigger('navigate', urls.reverse('app', [app]));
 
-            tracking.trackEvent('App view interactions', 'click', 'Successful review');
+            tracking.trackEvent('App Reviews', 'Submitted App Review', appDetails, new_rating);
             tracking.setVar(12, 'Reviewer', 'Reviewer', 1);
-            tracking.trackEvent(
-                'Write a Review',
-                'click',
-                app,
-                data.rating
-            );
 
         }).fail(function() {
             forms.toggleSubmitFormState($this, true);
