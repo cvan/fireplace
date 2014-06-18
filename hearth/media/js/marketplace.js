@@ -7,6 +7,7 @@ console.log('64K High Memory Area is available.');
 require.config({
     enforceDefine: true,
     paths: {
+        'fastclick': 'lib/fastclick',
         'flipsnap': 'lib/flipsnap',
         'jquery': 'lib/jquery-2.0.2',
         'underscore': 'lib/underscore',
@@ -33,6 +34,7 @@ define(
         'mobilenetwork',  // Must come before cat-dropdown (for amd.js)
         'cat-dropdown',
         'content-ratings',
+        'fastclick',
         'forms',
         'header',
         'image-deferrer',
@@ -211,7 +213,10 @@ function(_) {
     }).on('loaded loaded_more navigate fragment_loaded', function() {
         iconDeferrer.refresh();
         screenshotDeferrer.refresh();
+    }).on('loaded', function() {
+        require('fastclick').attach(document.body);
     });
+
     nunjucks_globals.imgAlreadyDeferred = function(src) {
         /*
             If an image already has been loaded, we use this helper in case the
