@@ -225,6 +225,7 @@ define('builder',
                             }
                             context.ctx.response = response;
                             context.ctx.error = code;
+                            fire(page, 'fragment_error', code);
                             el.innerHTML = except ? except() : error_template;
                         }
                     });
