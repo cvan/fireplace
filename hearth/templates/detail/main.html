@@ -21,6 +21,7 @@
     </div>
     <div class="tray previews full"></div>
   {% except %}
+    <title>{{ _('Oh no!') }}</title>
     <div class="detailed-error">
       <h2>{{ _('Oh no!') }}</h2>
       {% if error == 403 %}

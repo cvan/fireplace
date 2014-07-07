@@ -226,6 +226,13 @@ define('builder',
                             context.ctx.response = response;
                             context.ctx.error = code;
                             el.innerHTML = except ? except() : error_template;
+
+                            // Pop the `title` out of the `except` block.
+                            var title = el.querySelector('title');
+                            if (title) {
+                                z('title', title.textContent);
+                                el.removeChild(title);
+                            }
                         }
                     });
                     return request;
@@ -311,7 +318,7 @@ define('builder',
                 return context || (context = z.context = {});
             };
         })();
-        this.z = function(key, val) {
+        this.z = z = function(key, val) {
             context()[key] = val;
             switch (key) {
                 case 'title':
