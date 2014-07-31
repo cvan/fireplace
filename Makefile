@@ -18,9 +18,12 @@ compile:
 	commonplace compile
 
 test: clean compile
-	cd smokealarm ; \
-	casperjs test tests
-
+	@cp src/media/js/settings_local.js src/media/js/settings_local.js.bak
+	@cp src/media/js/settings_travis.js src/media/js/settings_local.js
+	@pushd smokealarm; \
+		casperjs test tests; \
+		popd
+	@mv src/media/js/settings_local.js.bak src/media/js/settings_local.js
 
 # Fireplace (real packaged app)
 package: clean
