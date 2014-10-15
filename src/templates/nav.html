@@ -1,9 +1,9 @@
 {% include "_macros/act_tray.html" %}
 
 {% macro navtab(code, name, url, path) %}
-<li class="{{ code }} {{ 'initial-active' if path == url }}"
+<li class="tab-item {{ code }} {{ 'initial-active' if path == url }}"
     data-tab="{{ code }}">
-  <a class="tab-link" href="{{ url }}">{{ name }}</a>
+  <a class="tab-link" href="{{ url }}"><span>{{ name }}</span></a>
 </li>
 {% endmacro %}
 
@@ -12,22 +12,24 @@
 
 {# Navigation tabs (Home, New, Popular, Categories). #}
 {# Uses body[data-page-type] to set active styles on the navigation tabs. #}
-<ul class="navbar nav-mkt{% if not is_settings %} active{% endif %}
-           {{ 'has-recommendations' if logged_in and recommendations }}">
-  {# Tab name must match route name. #}
-  {{ navtab('homepage', _('Home'), url('homepage'), path) }}
-  {{ navtab('new', _('New'), url('new'), path) }}
-  {{ navtab('popular', _('Popular'), url('popular'), path) }}
-  {% if logged_in and recommendations %}
-    {{ navtab('recommended', _('Recommended'), url('recommended'), path) }}
-  {% endif %}
-  <li class="categories {{ 'initial-active' if path == url('categories') }}"
-      data-tab="categories">
-    <a class="tab-link mobile-cat-link" href="{{ url('categories') }}">{{ _('Categories') }}</a>
-    <a class="desktop-cat-link">{{ _('Categories') }}</a>
-    <div class="hovercats"></div>
-  </li>
-</ul>
+<div class="navbar-wrapper">
+  <ul class="navbar nav-mkt{% if not is_settings %} active{% endif %}
+             {{ 'has-recommendations' if logged_in and recommendations }}">
+    {# Tab name must match route name. #}
+    {{ navtab('homepage', _('Home'), url('homepage'), path) }}
+    {{ navtab('new', _('New'), url('new'), path) }}
+    {{ navtab('popular', _('Popular'), url('popular'), path) }}
+    {% if logged_in and recommendations %}
+      {{ navtab('recommended', _('Recommended'), url('recommended'), path) }}
+    {% endif %}
+    <li class="tab-item categories {{ 'initial-active' if path == url('categories') }}"
+        data-tab="categories">
+      <a class="tab-link mobile-cat-link" href="{{ url('categories') }}"><span>{{ _('Categories') }}</span></a>
+      <a class="desktop-cat-link">{{ _('Categories') }}</a>
+      <div class="hovercats"></div>
+    </li>
+  </ul>
+</div>
 
 {# Settings tabs (My Account, My Apps, Help, Feedback). #}
 <ul class="navbar nav-settings{% if is_settings %} active{% endif %}">

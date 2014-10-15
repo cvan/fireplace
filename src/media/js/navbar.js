@@ -82,6 +82,19 @@ define('navbar',
             return;
         }
 
+        var navbar = $navbar[0];
+
+        if (!navbar.getAttribute('data-scrollfitted')) {
+            var navbarWrapper = navbar.parentNode;
+            var scrollbarHeight = navbar.offsetHeight - navbar.clientHeight;
+
+            console.error('>', navbarWrapper.clientHeight + ', ' +
+              (navbarWrapper.clientHeight - scrollbarHeight));
+
+            navbarWrapper.style.height = (navbarWrapper.clientHeight - scrollbarHeight) + 'px';
+            navbar.setAttribute('data-scrollfitted', 'true');
+        }
+
         var currentNavbarOffset = $navbar.offset().left * -1;
         var padding = 10;
         var right = currentNavbarOffset;

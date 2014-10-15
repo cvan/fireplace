@@ -36,11 +36,11 @@
             margin-bottom: -50px;
         }
     }
+
     .site-nav {
         background: $navbar-gray;
         bottom: 0;
         height: 50px;
-        overflow: hidden;
         position: relative;
         transition(bottom .5s, margin-bottom .5s);
 
@@ -99,62 +99,100 @@
         }
     }
 
+    .navbar-wrapper,
     .navbar {
-        disable-user-select();
-        display: inline-block;
-        height: auto;
-        opacity: 1;
-        padding: 8px 0;
+        height: 50px;
+        width: 100%;
+    }
+
+    .navbar-wrapper {
+        // background: red;
+        // display: inline-block;
         position: absolute;
         top: 0;
-        transition(unquote('right .5s ease-out, left .3s ease-in'));
+        left: 65px;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .navbar {
+        // background: green;
+        display: block;
+        // font-size: 0;  // to remove whitespace for `inline-block` children
+        // disable-user-select();
+        opacity: 1;
+        overflow-x: scroll;
+        // position: absolute;
+        // top: 0;
+        // for browsers that don't support `will-change` yet, use a
+        // `transform` to trick the browser into doing hardware acceleration
+        // (https://bugzilla.mozilla.org/show_bug.cgi?id=940842)
+        transform(unquote('translate3d(0,0,0)'));
+        // transition(unquote('right .5s ease-out, left .3s ease-in'));
         white-space: nowrap;
-        width: 100%;
+        will-change: scroll-position;
 
         &.nav-mkt {
             visibility: hidden;
-            right: -100%;
+            // right: -100%;
 
             &.active {
-                right: -65px;
+                // right: -65px;
                 visibility: visible;
             }
         }
+
         &.nav-settings {
             visibility: hidden;
-            right: 100%;
+            // right: 100%;
 
             &.active {
-                right: 0;
+                // right: 0;
                 visibility: visible;
             }
         }
-        li {
-            display: inline-block;
-            font-size: 15px;
-            position: relative;
-            text-align: center;
-            text-transform: uppercase;
-            top: 2px;
-            width: -moz-fit-content;
-            width: -webkit-fit-content;
 
-            a {
-                color: $navbar-text;
-                display: block;
-                height: 38px;
-                line-height: 32px;
-                padding: 0 10px;
+        // flex-direction: row;
+        // flex-wrap: nowrap;
+        // display: flex;
+        // align-self: flex-end;
 
-                &:hover {
-                    border-bottom: 2px solid $bg-gray;
-                    text-decoration: none;
-                }
-            }
-            .desktop-cat-link {
-                display: none;
+        display: flex;
+    }
+
+    .tab-item {
+        display: flex;
+        font-size: 15px;
+        text-align: center;
+        align-self: flex-end;
+        text-transform: uppercase;
+    }
+
+    .tab-link {
+        color: $navbar-text;
+        display: block;
+        // line-height: 32px;
+        padding: 0 10px;
+        // background: pink;
+
+        &:hover {
+            text-decoration: none;
+
+            span {
+                border-bottom-color: $bg-gray;
             }
         }
+
+        span {
+            border-bottom: 3px solid transparent;
+            position: relative;
+            top: -10px;
+            padding-bottom: 8px;
+        }
+    }
+
+    .desktop-cat-link {
+        display: none;
     }
 }
 
@@ -267,13 +305,13 @@
 
 // Navbar active states.
 activeNavLi() {
-    > a {
+    span {
         color: $breezy-blue;
         border-bottom: 3px solid $breezy-blue;
+    }
 
-        &:hover {
-            border-bottom-color: $breezy-blue;
-        }
+    a:hover span {
+        border-bottom-color: $breezy-blue;
     }
 }
 [data-page-type="root settings"] [data-tab="settings"] {
