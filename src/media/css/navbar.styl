@@ -1,6 +1,10 @@
 // Styles for the mobile navbar.
 @import 'lib';
 
+* {
+    border: 1px solid red !important;
+}
+
 [data-page-type~=settings] .header-button.settings,
 .act-tray.active .settings {
     background-image: url(../img/pretty/gear.svg);
@@ -8,9 +12,16 @@
 
 .navbar a {
     text-decoration: none;
+}
 
-    &:focus {
-        outline: 0;
+.tab-link {
+    border-bottom: 3px solid transparent;
+    color: $navbar-text;
+    display: block;
+
+    &:hover {
+        border-bottom-color: $bg-gray;
+        color: $medium-gray;
     }
 }
 
@@ -100,9 +111,9 @@
     }
 
     .navbar {
+        /* TODO: centre */
         disable-user-select();
         display: inline-block;
-        height: auto;
         opacity: 1;
         padding: 8px 0;
         position: absolute;
@@ -129,32 +140,28 @@
                 visibility: visible;
             }
         }
-        li {
-            display: inline-block;
-            font-size: 15px;
-            position: relative;
-            text-align: center;
-            text-transform: uppercase;
-            top: 2px;
-            width: -moz-fit-content;
-            width: -webkit-fit-content;
+    }
 
-            a {
-                color: $navbar-text;
-                display: block;
-                height: 38px;
-                line-height: 32px;
-                padding: 0 10px;
+    .tab-item {
+        display: inline-block;
+        font-size: 15px;
+        position: relative;
+        text-align: center;
+        text-transform: uppercase;
+        top: 2px;
+        width: -moz-fit-content;
+        width: -webkit-fit-content;
+    }
 
-                &:hover {
-                    border-bottom: 2px solid $bg-gray;
-                    text-decoration: none;
-                }
-            }
-            .desktop-cat-link {
-                display: none;
-            }
-        }
+    .tab-link {
+        color: $navbar-text;
+        height: 38px;
+        line-height: 32px;
+        padding: 0 10px;
+    }
+
+    .desktop-cat-link {
+        display: none;
     }
 }
 
@@ -166,96 +173,80 @@
     }
     .site-nav {
         background-color: #E0E0E0;
-        height: 50px;
         margin: 0 auto;
         z-index: 25;
     }
     .navbar {
         disable-user-select();
-        display: inline-block;
-        height: auto;
-        margin: 0 auto;
+        display: flex;
         left: 0;
+        height: 100%;
         opacity: 1;
-        position: absolute;
-        right: 0 !important;  // navbar.js sets rule on `style`, so override.
-        top: 0;
+    }
+
+    .tab-categories:hover .tab-link {
+        color: $breezy-blue;
+    }
+
+    .tab-item {
+        display: inline-block;
+        font-size: 15px;
+        line-height: 50px;
+        padding: 0 60px;
+        position: relative;
+        text-align: center;
+        text-transform: uppercase;
         width: -moz-fit-content;
         width: -webkit-fit-content;
 
-        > li {
-            display: inline-block;
-            font-size: 15px;
-            line-height: 50px;
-            padding: 0 60px;
-            position: relative;
-            text-align: center;
-            text-transform: uppercase;
-            width: -moz-fit-content;
-            width: -webkit-fit-content;
-
-            &.active > a {
-                color: $breezy-blue;
-            }
-            > a {
-                color: $medium-gray;
-                display: block;
-                height: 50px;
-                outline: 0;
-
-                &.tab-link {
-                    border-bottom: 0;
-                }
-                &:hover {
-                    text-decoration: none;
-                }
-            }
-            a:not([href]):hover {
-                cursor: default;
-            }
-        }
-        .categories {
-            &:hover {
-                color: $breezy-blue;
-
-                > a {
-                    color: $breezy-blue;
-
-                    &:after {
-                        border-top-color: $breezy-blue;
-                    }
-                }
-            }
-            > a {
-                &:after {
-                    border: 4px solid transparent;
-                    border-top: 7px solid $dark-gray;
-                    content: "";
-                    margin-left: 8px;
-                    position: absolute;
-                    top: 20px;
-                }
-            }
-        }
-        .mobile-cat-link {
-            display: none;
-        }
-        .desktop-cat-link {
-            display: inline;
+        &.active > .tab-link {
+            color: $breezy-blue;
         }
     }
+
+    .tab-link {
+        // background:yellow;
+        background: orange;
+        display: block;
+        outline: 0;
+        height: $header-height;
+    }
+
+    .mobile-cat-link {
+        display: none;
+    }
+
+    .desktop-cat-link {
+        display: inline;
+
+        &:after {
+            border: 4px solid transparent;
+            border-top: 7px solid $dark-gray;
+            content: "";
+            margin-left: 8px;
+            position: absolute;
+            top: 20px;
+        }
+
+        &:hover {
+            border-bottom-color: transparent;
+        }
+    }
+
+    .tab-categories {
+        cursor: pointer;
+
+        &:hover {
+            color: $breezy-blue;
+
+            .desktop-cat-link:after {
+                border-top-color: $breezy-blue;
+            }
+        }
+    }
+
     [data-page-type~=settings] .header-button.settings {
         background-image: url(../img/pretty/settings_gear.svg);
-    }
-}
-
-/* Add recommendation nav item if body.show-recommendations. */
-@media $at-least-desktop {
-    .show-recommendations .navbar > li {
-        width: 20%;
-        &:nth-child(2) {
-            width: 17%;
-        }
     }
 }
 
@@ -274,7 +265,7 @@
 [data-page-type~=purchases] [data-tab=purchases],
 [data-page-type~=feedback] [data-tab=feedback],
 [data-page-type="root settings"] [data-tab=settings] {
-    > a {
+    .tab-link {
         border-bottom: 3px solid $breezy-blue;
         color: $breezy-blue;
 

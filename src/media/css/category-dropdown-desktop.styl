@@ -123,6 +123,17 @@
 }
 
 @media $at-least-desktop {
+    .tab-categories:hover {
+        .hovercats,
+        .cat-overlay {
+            display: block;
+        }
+    }
+
+    .cat-overlay {
+        width: 500px;
+    }
+
     .hovercats {
         background: $white;
         border-radius: 5px;
@@ -133,10 +144,6 @@
         top: 48px;
         transform(unquote('translate(-90%,0)'));
 
-        &.active, &.active .cat-overlay {
-            display: block;
-            width: 500px;
-        }
         &:after {
             border: 10px solid transparent;
             border-bottom: 10px solid #fff;
