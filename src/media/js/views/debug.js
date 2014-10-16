@@ -63,7 +63,7 @@ define('views/debug',
             report_version: 1.0,
             profile: buckets.profile
         })};
-        requests.post('https://ashes.paas.allizom.org/post_report', data).done(function(data) {
+        requests.post(settings.ashes_report_url, data).done(function(data) {
             notification.notification({
                 message: 'ID: ' + data.id,
                 timeout: 30000
@@ -90,6 +90,33 @@ define('views/debug',
         z.page.trigger('reload_chrome');
         notification.notification({message: 'Carrier updated to ' + val});
     });
+
+    window.onerror = function (errorMsg, url, lineNumber) {
+        var console = log('raven');
+        console.log('Attempting to submit error to Ashes: ' + errorMsg);
+
+        var data = {body: JSON.stringify({
+            app: settings.app_name,
+            origin: window.location.protocol + '//' + window.location.host,
+
+            logs: log.all,
+            persistent_logs: log.persistent.all,
+            capabilities: capabilities,
+            settings: settings,
+            report_version: 1.0,
+            profile: buckets.profile,
+
+            errors: {
+                message: errorMsg,
+                url: url,
+                line: lineNumber
+            }
+        })};
+
+        requests.post(settings.ashes_report_url, data).done(function (data) {
+            console.log('Submitted error to Ashes: ' + data.id);
+        });
+    };
 
     return function(builder, args) {
         var recent_logs = log.get_recent(100);

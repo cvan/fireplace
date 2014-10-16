@@ -165,5 +165,8 @@ define('settings', ['l10n', 'settings_local', 'underscore'], function(l10n, sett
         iframe_installer_src: 'https://marketplace.firefox.com/iframe-install.html',
         iframe_potatolytics_src: 'https://marketplace.firefox.com/potatolytics.html',
         offline_msg: gettext('Sorry, you are currently offline. Please try again later.'),
+
+        // The URL to post reports to Ashes <https://github.com/mozilla/ashes>.
+        ashes_report_url: 'https://ashes.paas.allizom.org/post_report',
     });
 });
