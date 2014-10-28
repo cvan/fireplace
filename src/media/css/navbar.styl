@@ -1,9 +1,9 @@
 // Styles for the mobile navbar.
 @import 'lib';
 
-* {
-    border: 1px solid red !important;
-}
+// * {
+//     border: 1px solid red !important;
+// }
 
 [data-page-type~=settings] .header-button.settings,
 .act-tray.active .settings {
@@ -184,7 +184,8 @@
         opacity: 1;
     }
 
-    .tab-categories:hover .tab-link {
+    .tab-categories:hover .tab-link,
+    .tab-item.active > .tab-link {
         color: $breezy-blue;
     }
 
@@ -198,15 +199,11 @@
         text-transform: uppercase;
         width: -moz-fit-content;
         width: -webkit-fit-content;
-
-        &.active > .tab-link {
-            color: $breezy-blue;
-        }
     }
 
     .tab-link {
         // background:yellow;
-        background: orange;
+        // background: orange;
         display: block;
         outline: 0;
         height: $header-height;

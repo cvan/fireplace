@@ -1,9 +1,9 @@
 {% include "_macros/act_tray.html" %}
 
-{% macro navtab(code, name, url, path) %}
+{% macro navtab(code, name, url) %}
 <li class="tab-item {{ code }} {{ 'initial-active' if path == url }}"
     data-tab="{{ code }}">
-  <a class="tab-link" href="{{ url }}">{{ name }}</a>
+  <a class="tab-link" href="{{ url }}"><span>{{ name }}</span></a>
 </li>
 {% endmacro %}
 
@@ -23,8 +23,8 @@
   {% endif %}
   <li class="tab-item tab-categories {{ 'initial-active' if path == url('categories') }}"
       data-tab="categories">
-    <a class="tab-link mobile-cat-link" href="{{ url('categories') }}">{{ _('Categories') }}</a>
-    <a class="tab-link desktop-cat-link">{{ _('Categories') }}</a>
+    <a class="tab-link mobile-cat-link" href="{{ url('categories') }}"><span>{{ _('Categories') }}</span></a>
+    <a class="tab-link desktop-cat-link"><span>{{ _('Categories') }}</span></a>
     <div class="hovercats"></div>
   </li>
 </ul>
