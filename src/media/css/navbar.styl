@@ -1,9 +1,9 @@
 // Styles for the mobile navbar.
 @import 'lib';
 
-* {
-    border: 1px solid red !important;
-}
+// * {
+//     border: 1px solid red !important;
+// }
 
 [data-page-type~=settings] .header-button.settings,
 .act-tray.active .settings {
@@ -11,18 +11,23 @@
 }
 
 .navbar a {
-    display: block;
     text-decoration: none;
 }
 
-.tab-link span {
-    border-bottom: 3px solid transparent;
-    color: $navbar-text;
+.tab-link {
     display: block;
 
     &:hover {
-        border-bottom-color: $bg-gray;
-        color: $medium-gray;
+        span {
+            border-bottom-color: $bg-gray;
+            color: $medium-gray;
+        }
+    }
+
+    span {
+        border-bottom: 3px solid transparent;
+        color: $navbar-text;
+        display: block;
     }
 }
 
@@ -180,10 +185,8 @@
     }
     .navbar {
         disable-user-select();
-        display: flex;
-        left: 0;
-        height: 100%;
         opacity: 1;
+        flex-vertical-center();
     }
 
     .tab-categories:hover .tab-link,
@@ -194,7 +197,7 @@
     .tab-item {
         display: inline-block;
         font-size: 15px;
-        line-height: 50px;
+        // line-height: 50px;
         position: relative;
         text-align: center;
         text-transform: uppercase;
@@ -208,9 +211,12 @@
         // position: relative;
         // outline: 0;
         height: $header-height;
+        background: cyan;
+
+        flex-vertical-center();
 
         span {
-            // background: blue;
+            background: green;
             margin: 0 60px;
         }
     }
@@ -220,9 +226,9 @@
     }
 
     .desktop-cat-link {
-        display: inline-block;
+        display: flex;
 
-        &:after {
+        span:after {
             border: 4px solid transparent;
             border-top: 7px solid $dark-gray;
             content: "";
@@ -231,18 +237,10 @@
             top: 20px;
         }
 
-        &:hover {
-            border-bottom-color: transparent;
-        }
-    }
-
-    .tab-categories {
-        cursor: pointer;
-
-        &:hover {
+        &:hover span {
             color: $breezy-blue;
 
-            .desktop-cat-link:after {
+            &:after {
                 border-top-color: $breezy-blue;
             }
         }
@@ -269,7 +267,7 @@
 [data-page-type~=feedback] [data-tab=feedback],
 [data-page-type="root settings"] [data-tab=settings] {
     .tab-link span {
-        border-bottom: 3px solid $breezy-blue;
+        border-bottom-color: $breezy-blue;
         color: $breezy-blue;
 
         &:hover {
