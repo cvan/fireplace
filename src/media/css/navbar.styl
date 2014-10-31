@@ -10,24 +10,36 @@
     text-decoration: none;
 }
 
+.navbar {
+    flex-vertical-center();
+}
+
 .tab-item {
-    display: inline-block;
+    // display: inline-block;
     font-size: 15px;
-    position: relative;
+    // position: relative;
     text-align: center;
     text-transform: uppercase;
-    width: -moz-fit-content;
-    width: -webkit-fit-content;
-    width: fit-content;
+    // width: -moz-fit-content;
+    // width: -webkit-fit-content;
+    // width: fit-content;
 }
 
 .tab-link {
-    border-bottom: 3px solid transparent;
-    color: $navbar-text;
-    display: block;
+    span {
+        // border-bottom: 0 solid transparent;
+        color: $navbar-text;
+        height: 100%;
+        line-height: $header-height;
+        transition(unquote('all .15s ease-in-out'));
+    }
 
-    &:hover {
-        border-bottom-color: $bg-gray;
+    &:hover span {
+        background: rgba(255,255,255,.5);
+        // margin: 0;
+        // padding: 0 60px;
+        border-bottom: 3px solid $bg-gray;
+        // border-bottom-color: $bg-gray;
         color: $medium-gray;
     }
 }
@@ -42,14 +54,18 @@
 [data-page-type~=feedback] [data-tab=feedback],
 [data-page-type="root settings"] [data-tab=settings] {
     .tab-link {
-        border-bottom: 3px solid $breezy-blue;
-        color: $breezy-blue;
+        span {
+            border-bottom: 3px solid $breezy-blue;
+            color: $breezy-blue;
+        }
 
-        &:hover {
+        &:hover span {
             border-bottom-color: $breezy-blue;
         }
     }
 }
+
+/* TODO: categories :hover border should be transparent; color should be blue */
 
 @media $narrower-than-desktop {
     // New feed navigation (mobile only).
@@ -137,6 +153,7 @@
     }
 
     .navbar {
+        /* TODO: centre */
         disable-user-select();
         display: inline-block;
         opacity: 1;
@@ -196,35 +213,42 @@
     }
     .navbar {
         disable-user-select();
-        display: inline-block;
-        margin: 0 auto;
-        left: 0;
-        height: 100%;
+        // display: inline-block;
+        // margin: 0 auto;
+        // left: 0;
+        // height: 100%;
         opacity: 1;
-        position: absolute;
-        right: 0 !important;  // navbar.js sets rule on `style`, so override.
-        top: 0;
-        width: -moz-fit-content;
-        width: -webkit-fit-content;
-        width: fit-content;
+        // position: absolute;
+        // right: 0 !important;  // navbar.js sets rule on `style`, so override.
+        // top: 0;
     }
 
+    /* TODO: needed? can simplify? */
+    .tab-item.active > .tab-link,
     .tab-categories:hover .tab-link {
         color: $breezy-blue;
     }
 
     .tab-item {
-        line-height: 50px;
-        padding: 0 60px;
+        // line-height: 50px;
 
         &.active > .tab-link {
             color: $breezy-blue;
         }
     }
+
     .tab-link {
-        display: block;
-        outline: 0;
+        flex-vertical-center();
+
+        // outline: 0;
+        // height: 38px;
+        // line-height: 32px;
+
         height: $header-height;
+
+        span {
+            margin: 0 60px;
+        }
     }
 
     .mobile-cat-link {
@@ -232,9 +256,9 @@
     }
 
     .desktop-cat-link {
-        display: inline;
+        display-flex();
 
-        &:after {
+        span:after {
             border: 4px solid transparent;
             border-top: 7px solid $dark-gray;
             content: "";
@@ -244,7 +268,11 @@
         }
 
         &:hover {
-            border-bottom-color: transparent;
+            color: $breezy-blue;
+
+            &:after {
+                border-top-color: $breezy-blue;
+            }
         }
     }
 
@@ -268,16 +296,6 @@
         &:hover .tab-link,
         .tab-link:hover {
             border-bottom-color: transparent;
-        }
-    }
-}
-
-/* Add recommendation nav item if body.show-recommendations. */
-@media $at-least-desktop {
-    .show-recommendations .navbar > li {
-        width: 20%;
-        &:nth-child(2) {
-            width: 17%;
         }
     }
 }
