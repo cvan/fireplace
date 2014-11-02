@@ -186,23 +186,6 @@ define('views/search',
     function processor(query) {
         query = query ? query.toLowerCase() : '';
         return function(data) {
-            switch (query) {
-                case 'what does the fox say?':
-                    var base = function(item) {return _.extend(item, {author: 'The Fox', 'previews':[], 'icons': {'64': urls.media('fireplace/img/logos/firefox-256.png')}});};
-                    data.unshift(base({name: 'Joff-tchoff-tchoffo-tchoffo-tchoff!'}));
-                    data.unshift(base({name: 'Hatee-hatee-hatee-ho!'}));
-                    data.unshift(base({name: 'Wa-pa-pa-pa-pa-pa-pow!'}));
-                    data.unshift(base({name: 'Ring-ding-ding-ding-dingeringeding!'}));
-                    break;
-                case 'hampster dance':
-                    data.forEach(function(v, k) {
-                        v.icons['64'] = urls.media('fireplace/img/icons/eggs/h' + (k % 4 + 1) + '.gif');
-                    });
-                    break;
-                case 'rick fant rolled':
-                    data.forEach(function(v) { v.url = 'http://www.youtube.com/watch?v=oHg5SJYRHA0'; });
-                    break;
-            }
             return data;
         };
     }
@@ -218,11 +201,6 @@ define('views/search',
         var query = params.full_q || params.q;
         builder.z('search', query);
         builder.z('title', query || gettext('Search Results'));
-
-        if (params.q === 'hampster dance') {
-            params.q = 'dance';
-            (new Audio(urls.media('fireplace/hampster.ogg'))).play();
-        }
 
         builder.start('search/main.html', {
             endpoint_name: 'search',
