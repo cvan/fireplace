@@ -26,7 +26,7 @@
         color: $navbar-text;
         height: 100%;
         line-height: $header-height;
-        transition(unquote('all .15s ease-in-out'));
+        transition(unquote('all .1s ease-in-out'));
     }
 
     &:hover span {
@@ -185,13 +185,6 @@
 }
 
 @media $at-least-desktop {
-    .navbar.nav-settings,
-    .act-tray,
-    .mkt-tray,
-    .mobile-cat-link {
-        display: none;
-    }
-
     .site-nav {
         background-color: #E0E0E0;
         margin: 0 auto;
@@ -223,26 +216,16 @@
             margin-left: 8px;
             position: absolute;
             top: 20px;
+            transition(unquote('all .1s ease-in-out'));
         }
-
-        &:hover {
-            color: $breezy-blue;
-
-            &:after {
-                border-top-color: $breezy-blue;
-            }
-        }
-    }
-
-    .tab-categories {
-        cursor: pointer;
 
         &:hover {
             span {
                 color: $breezy-blue;
+                border-bottom: 0;
             }
 
-            .desktop-cat-link:after {
+            &:after {
                 border-top-color: $breezy-blue;
             }
         }
@@ -251,15 +234,9 @@
     [data-page-type~=settings] .header-button.settings {
         background-image: url(../img/pretty/settings_gear.svg);
     }
-
-    [data-page-type~=categories] [data-tab=categories] {
-        &:hover .tab-link,
-        .tab-link:hover {
-            border-bottom-color: transparent;
-        }
-    }
 }
 
+/* TODO: remove? */
 @media $wider-desktop {
     .site-nav {
         top: 0;
