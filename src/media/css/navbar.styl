@@ -128,16 +128,13 @@
             right: -60px;
 
             a.back-to-marketplace {
-                background: url(../img/pretty/marketplace-icon.svg) 50% 50% no-repeat;
+                background: url(../img/pretty/marketplace-icon.svg) center no-repeat;
                 background-size: 30px auto;
                 display: block;
                 height: 50px;
                 position: absolute;
                 width: 50px;
             }
-        }
-        .account-links {
-            display: none;
         }
     }
 
@@ -206,9 +203,7 @@
         }
     }
 
-    .desktop-cat-link {
-        display-flex();
-
+    .tab-categories {
         span:after {
             border: 4px solid transparent;
             border-top: 7px solid $dark-gray;
@@ -216,17 +211,17 @@
             margin-left: 8px;
             position: absolute;
             top: 20px;
-            transition(unquote('all .1s ease-in-out'));
+            transition(unquote('border .1s ease-in-out'));
         }
 
         &:hover {
             span {
                 color: $breezy-blue;
                 border-bottom: 0;
-            }
 
-            &:after {
-                border-top-color: $breezy-blue;
+                &:after {
+                    border-top-color: $breezy-blue;
+                }
             }
         }
     }
