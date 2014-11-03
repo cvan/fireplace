@@ -15,19 +15,14 @@
 }
 
 .tab-item {
-    // display: inline-block;
     font-size: 15px;
-    // position: relative;
+    position: relative;
     text-align: center;
     text-transform: uppercase;
-    // width: -moz-fit-content;
-    // width: -webkit-fit-content;
-    // width: fit-content;
 }
 
 .tab-link {
     span {
-        // border-bottom: 0 solid transparent;
         color: $navbar-text;
         height: 100%;
         line-height: $header-height;
@@ -35,11 +30,7 @@
     }
 
     &:hover span {
-        background: rgba(255,255,255,.5);
-        // margin: 0;
-        // padding: 0 60px;
         border-bottom: 3px solid $bg-gray;
-        // border-bottom-color: $bg-gray;
         color: $medium-gray;
     }
 }
@@ -64,8 +55,6 @@
         }
     }
 }
-
-/* TODO: categories :hover border should be transparent; color should be blue */
 
 @media $narrower-than-desktop {
     // New feed navigation (mobile only).
@@ -153,7 +142,6 @@
     }
 
     .navbar {
-        /* TODO: centre */
         disable-user-select();
         display: inline-block;
         opacity: 1;
@@ -184,10 +172,6 @@
         }
     }
 
-    .tab-item {
-        top: 2px;
-    }
-
     .tab-link {
         color: $navbar-text;
         height: 38px;
@@ -203,56 +187,30 @@
 @media $at-least-desktop {
     .navbar.nav-settings,
     .act-tray,
-    .mkt-tray {
+    .mkt-tray,
+    .mobile-cat-link {
         display: none;
     }
+
     .site-nav {
         background-color: #E0E0E0;
         margin: 0 auto;
         z-index: 25;
     }
+
     .navbar {
         disable-user-select();
-        // display: inline-block;
-        // margin: 0 auto;
-        // left: 0;
-        // height: 100%;
         opacity: 1;
-        // position: absolute;
-        // right: 0 !important;  // navbar.js sets rule on `style`, so override.
-        // top: 0;
-    }
-
-    /* TODO: needed? can simplify? */
-    .tab-item.active > .tab-link,
-    .tab-categories:hover .tab-link {
-        color: $breezy-blue;
-    }
-
-    .tab-item {
-        // line-height: 50px;
-
-        &.active > .tab-link {
-            color: $breezy-blue;
-        }
     }
 
     .tab-link {
         flex-vertical-center();
-
         // outline: 0;
-        // height: 38px;
-        // line-height: 32px;
-
         height: $header-height;
 
         span {
             margin: 0 60px;
         }
-    }
-
-    .mobile-cat-link {
-        display: none;
     }
 
     .desktop-cat-link {
@@ -280,7 +238,9 @@
         cursor: pointer;
 
         &:hover {
-            color: $breezy-blue;
+            span {
+                color: $breezy-blue;
+            }
 
             .desktop-cat-link:after {
                 border-top-color: $breezy-blue;

@@ -23,20 +23,20 @@
   {% endif %}
   <li class="tab-item tab-categories{{ ' initial-active' if path == url('categories') }}"
       data-tab="categories">
-    <a class="tab-link mobile-cat-link" href="{{ url('categories') }}"><span>{{ _('Categories') }}</span></a>
-    <a class="tab-link desktop-cat-link"><span>{{ _('Categories') }}</span></a>
+    <a class="tab-link mobile-cat-link hide-on-desktop" href="{{ url('categories') }}"><span>{{ _('Categories') }}</span></a>
+    <a class="tab-link desktop-cat-link hide-on-mobile"><span>{{ _('Categories') }}</span></a>
     <div class="hovercats"></div>
   </li>
 </ul>
 
 {# Settings tabs (My Account, My Apps, Help, Feedback). #}
-<ul class="navbar nav-settings{{ ' active' if is_settings }}">
+<ul class="navbar nav-settings{{ ' active' if is_settings }} hide-on-mobile">
   {# Tab name must match route name. #}
   {{ navtab('settings', _('My Account'), url('settings'), path) }}
   {{ navtab('purchases', _('My Apps'), url('purchases'), path) }}
   {{ navtab('feedback', _('Feedback'), url('feedback'), path) }}
 </ul>
 
-<div class="mkt-tray{{ ' active' if is_settings }}">
+<div class="mkt-tray{{ ' active' if is_settings }} hide-on-desktop">
   <a class="header-button icon back-to-marketplace" title="{{ _('Back to Marketplace') }}"></a>
 </div>

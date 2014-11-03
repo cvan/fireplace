@@ -106,12 +106,16 @@ dd {
 }
 
 @media $narrower-than-desktop {
-    .back-to-app {
-        display: none;
+    .back-to-app,
+    .hide-on-mobile {
+        display: none !important;
     }
 }
 
 @media $at-least-desktop {
+    .hide-on-desktop {
+        display: none !important;
+    }
     h2 {
         font-size: 40px;
         font-weight: 300;
