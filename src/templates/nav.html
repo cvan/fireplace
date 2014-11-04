@@ -8,11 +8,11 @@
 {% endmacro %}
 
 {# Actions drop-down (desktop) or settings toggle (mobile). #}
-{{ act_tray(true, is_settings) }}
+{{ act_tray(true) }}
 
 {# Navigation tabs (Home, New, Popular, Categories). #}
 {# Uses body[data-page-type] to set active styles on the navigation tabs. #}
-<ul class="navbar nav-mkt{{ ' active' if not is_settings }}">
+<ul class="navbar nav-mkt">
   {# Tab name must match route name. #}
   {{ navtab('homepage', _('Home'), url('homepage'), path) }}
   {{ navtab('new', _('New'), url('new'), path) }}
@@ -29,13 +29,13 @@
 </ul>
 
 {# Settings tabs (My Account, My Apps, Help, Feedback). #}
-<ul class="navbar nav-settings{{ ' active' if is_settings }} hide-on-desktop">
+<ul class="navbar nav-settings hide-on-desktop">
   {# Tab name must match route name. #}
   {{ navtab('settings', _('My Account'), url('settings'), path) }}
   {{ navtab('purchases', _('My Apps'), url('purchases'), path) }}
   {{ navtab('feedback', _('Feedback'), url('feedback'), path) }}
 </ul>
 
-<div class="mkt-tray{{ ' active' if is_settings }} hide-on-desktop">
+<div class="mkt-tray hide-on-desktop">
   <a class="header-button icon back-to-marketplace" title="{{ _('Back to Marketplace') }}"></a>
 </div>

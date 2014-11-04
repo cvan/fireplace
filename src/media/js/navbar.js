@@ -9,59 +9,60 @@ define('navbar',
     // var NAV_SETTINGS_BASE_OFFSET = 0;
     // var NAV_LINK_VISIBLE_WIDTH = 50;
 
-    function initNavbarButtons() {
-        // Navbar settings + Marketplace buttons.
-        var $mktNavGroup = $('.nav-mkt, .act-tray.mobile');
-        var $settingsNavGroup = $('.nav-settings, .mkt-tray');
+    // function initNavbarButtons() {
+    //     // Navbar settings + Marketplace buttons.
+    //     var $mktNavGroup = $('.nav-mkt, .act-tray.mobile');
+    //     var $settingsNavGroup = $('.nav-settings, .mkt-tray');
 
-        function toggleNavbar($on, $off) {
-            $on.addClass('active');
-            $off.removeClass('active');
-        }
+    //     function toggleNavbar($on, $off) {
+    //         $on.addClass('active');
+    //         $off.removeClass('active');
+    //     }
 
-        // function fitNavbarOnSwitch($navbar, $item) {
-        //     // Switching between navbars makes it difficult to do initial
-        //     // line-fitting since the navbar is in a transitioning state. So
-        //     // we do a timeout. But for navbars that have already been fitted,
-        //     // don't do a timeout delay.
-        //     var waitForTransition = 500;
-        //     if ($navbar.data('fitted')) {
-        //         waitForTransition = 0;
-        //     }
+    //     // function fitNavbarOnSwitch($navbar, $item) {
+    //     //     // Switching between navbars makes it difficult to do initial
+    //     //     // line-fitting since the navbar is in a transitioning state. So
+    //     //     // we do a timeout. But for navbars that have already been fitted,
+    //     //     // don't do a timeout delay.
+    //     //     var waitForTransition = 500;
+    //     //     if ($navbar.data('fitted')) {
+    //     //         waitForTransition = 0;
+    //     //     }
 
-        //     setTimeout(function() {
-        //         fitNavbar($item);
-        //     }, waitForTransition);
-        // }
+    //     //     setTimeout(function() {
+    //     //         fitNavbar($item);
+    //     //     }, waitForTransition);
+    //     // }
 
-        // Toggle between Settings page and Marketplace pages.
-        z.body.on('click', '.act-tray.mobile', function(e) {
-            // Activate Settings page navbar.
-            e.preventDefault();
-            toggleNavbar($settingsNavGroup, $mktNavGroup);
+    //     // Toggle between Settings page and Marketplace pages.
+    //     z.body.on('click', '.act-tray.mobile', function(e) {
+    //         // Activate Settings page navbar.
+    //         e.preventDefault();
+    //         toggleNavbar($settingsNavGroup, $mktNavGroup);
 
-            var $firstLink = $settingsNavGroup.find('[data-tab]:first-child a');
-            z.page.trigger('navigate', $firstLink.attr('href'));
+    //         var $firstLink = $settingsNavGroup.find('[data-tab]:first-child a');
+    //         z.page.trigger('navigate', $firstLink.attr('href'));
 
-            // fitNavbarOnSwitch($firstLink.closest('.navbar'),
-            //                   $firstLink.closest('li'));
-        })
-        .on('click', '.mkt-tray', function(e) {
-            // Activate Marketplace pages navbar.
-            e.preventDefault();
-            toggleNavbar($mktNavGroup, $settingsNavGroup);
+    //         // fitNavbarOnSwitch($firstLink.closest('.navbar'),
+    //         //                   $firstLink.closest('li'));
+    //     })
+    //     .on('click', '.mkt-tray', function(e) {
+    //         // Activate Marketplace pages navbar.
+    //         e.preventDefault();
+    //         toggleNavbar($mktNavGroup, $settingsNavGroup);
 
-            var $firstLink = $mktNavGroup.find('[data-tab]:first-child a');
-            z.page.trigger('navigate', $firstLink.attr('href'));
+    //         var $firstLink = $mktNavGroup.find('[data-tab]:first-child a');
+    //         z.page.trigger('navigate', $firstLink.attr('href'));
 
-            // fitNavbarOnSwitch($firstLink.closest('.navbar'),
-            //                   $firstLink.closest('li'));
-        })
-        // .on('click', '.site a', function() {
-        //     // Activate Marketplace pages navbar.
-        //     toggleNavbar($mktNavGroup, $settingsNavGroup);
-        // });
-    }
+    //         // fitNavbarOnSwitch($firstLink.closest('.navbar'),
+    //         //                   $firstLink.closest('li'));
+    //     })
+    //     // .on('click', '.site a', function() {
+    //     //     // Activate Marketplace pages navbar.
+    //     //     toggleNavbar($mktNavGroup, $settingsNavGroup);
+    //     // });
+    // }
+
     // z.body.one('loaded', initNavbarButtons);
 
     // z.body.on('click', '.navbar li > a', function() {
@@ -204,8 +205,6 @@ define('navbar',
         var stack = navigation.stack();
         $('#site-nav').html(
             nunjucks.env.render('nav.html', {
-                is_settings: z.body.attr('data-page-type') &&
-                             z.body.attr('data-page-type').indexOf('settings') !== -1,
                 logged_in: user.logged_in(),
                 recommendations: settings.switches &&
                                  settings.switches.indexOf('recommendations') !== -1,
@@ -221,7 +220,7 @@ define('navbar',
             nunjucks.env.render('cat_overlay.html', {categories: cats})
         );
 
-        initNavbarButtons();
+        // initNavbarButtons();
     }
 
     // Render navbar.
