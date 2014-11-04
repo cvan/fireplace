@@ -7,6 +7,7 @@
 }
 
 .navbar {
+    disable-user-select();
     flex-vertical-center();
 
     a {
@@ -22,10 +23,15 @@
 }
 
 .tab-link {
+    display-flex();
+    // outline: 0;
+    height: $header-height;
+
     span {
         color: $navbar-text;
-        height: 100%;
+        // height: 100%;
         line-height: $header-height;
+        margin: 0 60px;
         transition(unquote('all .1s ease-in-out'));
     }
 
@@ -92,8 +98,9 @@
         .mkt-tray {
             background-color: $cloud-gray;
             border: 1px solid $cement-gray;
+            opacity: 1;
             height: 51px;
-            transition(right .4s);
+            transition(all .4s);
             width: 56px;
             z-index: 2;
 
@@ -139,15 +146,13 @@
     }
 
     .navbar {
-        disable-user-select();
         // display: inline-block;
-        opacity: 1;
-        padding: 8px 0;
-        position: absolute;
+        // opacity: 1;
+        // padding: 8px 0;
+        // position: absolute;
         top: 0;
         transition(unquote('right .5s ease-out, left .3s ease-in'));
         white-space: nowrap;
-        width: 100%;
 
         &.nav-mkt {
             visibility: hidden;
@@ -169,12 +174,12 @@
         }
     }
 
-    .tab-link {
-        color: $navbar-text;
-        height: 38px;
-        line-height: 32px;
-        padding: 0 10px;
-    }
+    // .tab-link {
+    //     color: $navbar-text;
+    //     height: 38px;
+    //     line-height: 32px;
+    //     padding: 0 10px;
+    // }
 
     .desktop-cat-link {
         display: none;
@@ -189,19 +194,18 @@
     }
 
     .navbar {
-        disable-user-select();
-        opacity: 1;
+        // opacity: 1;
     }
 
-    .tab-link {
-        flex-vertical-center();
-        // outline: 0;
-        height: $header-height;
+    // .tab-link {
+    //     display-flex();
+    //     // outline: 0;
+    //     height: $header-height;
 
-        span {
-            margin: 0 60px;
-        }
-    }
+    //     span {
+    //         margin: 0 60px;
+    //     }
+    // }
 
     .tab-categories {
         span:after {
