@@ -35,8 +35,15 @@
     }
 }
 
+.hovercats,
 .cat-overlay {
-    display: none;
+    opacity: 0;
+    transition(unquote('opacity .5s, top .5s, visibility .5s, transform .5s'));
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.cat-overlay {
     padding: 10px;
     width: 0;  // Don't affect `fit-content` on mobile.
 
@@ -115,7 +122,13 @@
     .tab-categories:hover {
         .hovercats,
         .cat-overlay {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        .hovercats {
+            transform(unquote('translateX(-90%)'));
         }
     }
 
@@ -127,11 +140,10 @@
         background: $white;
         border-radius: 5px;
         box-shadow: 0 2px 1px -1px $cement-gray;  // Bottom box-shadow.
-        display: none;
         left: 90%;
         position: absolute;
         top: 48px;
-        transform(unquote('translate(-90%,0)'));
+        transform(unquote('translateX(-90%)'));
 
         &:after {
             border: 10px solid transparent;
@@ -148,9 +160,12 @@
 }
 
 @media (max-width: 800px) {
+    .tab-categories:hover .hovercats {
+        transform(unquote('translateX(-100%)'));
+    }
     .hovercats {
         left: 100%;
-        transform(unquote('translate(-100%,0)'));
+        transform(unquote('translateX(-100%)'));
 
         &:after {
             left: 80%;
@@ -159,9 +174,16 @@
 }
 
 @media $wider-desktop {
+    /* Category drop-down menu grows at wide-desktop width. */
+    .tab-categories:hover .hovercats {
+        transform(unquote('scale(1) translateX(-50%)'));
+        top: 48px;
+    }
     .hovercats {
         left: 50%;
-        transform(unquote('translate(-50%,0)'));
+        transform(unquote('scale(0) translateX(-50%)'));
+        transform-origin(top, left);
+        top: 38px;
 
         &:after {
             left: 50%;
