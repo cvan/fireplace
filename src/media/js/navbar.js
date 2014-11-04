@@ -54,8 +54,8 @@ define('navbar',
             var $firstLink = $mktNavGroup.find('[data-tab]:first-child a');
             z.page.trigger('navigate', $firstLink.attr('href'));
 
-            fitNavbarOnSwitch($firstLink.closest('.navbar'),
-                              $firstLink.closest('li'));
+            // fitNavbarOnSwitch($firstLink.closest('.navbar'),
+            //                   $firstLink.closest('li'));
         })
         .on('click', '.site a', function() {
             // Activate Marketplace pages navbar.
@@ -226,7 +226,7 @@ define('navbar',
 
     // Render navbar.
     z.page.one('loaded', render);
-    z.win.on('resize', _.debounce(render, 100));
+    // z.win.on('resize', _.debounce(render, 100));
 
     return {
         'render': render,
