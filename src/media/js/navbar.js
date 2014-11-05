@@ -228,6 +228,6 @@ define('navbar',
     // z.win.on('resize', _.debounce(render, 100));
 
     return {
-        'render': render,
+        render: render
     };
 });
