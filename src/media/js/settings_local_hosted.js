@@ -1,6 +1,6 @@
-define('settings_local', [], function() {
-    var origin = window.location.origin || (
-        window.location.protocol + '//' + window.location.host);
+define('settings_local', ['polyfill'], function() {
+    // Require polyfill to set window.location.origin.
+    var origin = window.location.origin;
     return {
         api_url: origin,
         media_url: document.body.getAttribute('data-media'),

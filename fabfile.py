@@ -33,8 +33,6 @@ def pre_update(ref):
 @task
 def update():
     with lcd(FIREPLACE):
-        local('npm install')
-        local('node_modules/.bin/bower update --allow-root')
         local('make update')
         local('cp src/media/js/settings_local_hosted.js src/media/js/settings_local.js')
 
@@ -78,7 +76,7 @@ def pre_update_latest_tag():
 @task
 def build_package(package_env):
     with lcd(FIREPLACE):
-        local('make package_%s' % package_env)
+        local('SERVER=%s node_modules/.bin/gulp package' % package_env)
 
 
 @task
