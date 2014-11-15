@@ -6,25 +6,43 @@
     background-image: url(../img/pretty/gear.svg);
 }
 
-.navbar a {
-    text-decoration: none;
+.navbar {
+    disable-user-select();
+    // flex-vertical-center();
+    opacity: 1;
+    position: absolute;
+    top: 0;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: stretch;
+
+    margin: 0 auto;
+    max-width: 1024px;
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .tab-item {
-    display: inline-block;
+    flex: 1;
     font-size: 15px;
     position: relative;
-    text-align: center;
     text-transform: uppercase;
-    width: -moz-fit-content;
-    width: -webkit-fit-content;
-    width: fit-content;
 }
 
 .tab-link {
     border-bottom: 3px solid transparent;
     color: $navbar-text;
+    // display-flex();
     display: block;
+    // outline: 0;
+    height: $header-height;
+    text-align: center;
 
     &:hover {
         border-bottom-color: $bg-gray;
@@ -137,15 +155,8 @@
     }
 
     .navbar {
-        disable-user-select();
-        display: inline-block;
-        opacity: 1;
         padding: 8px 0;
-        position: absolute;
-        top: 0;
         transition(unquote('right .5s ease-out, left .3s ease-in'));
-        white-space: nowrap;
-        width: 100%;
 
         &.nav-mkt {
             visibility: hidden;
@@ -195,32 +206,18 @@
         z-index: 25;
     }
     .navbar {
-        disable-user-select();
-        display: inline-block;
-        margin: 0 auto;
         left: 0;
         height: 100%;
-        opacity: 1;
-        position: absolute;
         right: 0 !important;  // navbar.js sets rule on `style`, so override.
-        top: 0;
-        width: -moz-fit-content;
-        width: -webkit-fit-content;
-        width: fit-content;
     }
 
     .tab-item {
         line-height: 50px;
-        padding: 0 60px;
+        // padding: 0 60px;
 
         &.active > .tab-link {
             color: $breezy-blue;
         }
-    }
-    .tab-link {
-        display: block;
-        outline: 0;
-        height: $header-height;
     }
 
     .mobile-cat-link {
@@ -266,16 +263,6 @@
         &:hover .tab-link,
         .tab-link:hover {
             border-bottom-color: transparent;
-        }
-    }
-}
-
-/* Add recommendation nav item if body.show-recommendations. */
-@media $at-least-desktop {
-    .show-recommendations .navbar > li {
-        width: 20%;
-        &:nth-child(2) {
-            width: 17%;
         }
     }
 }

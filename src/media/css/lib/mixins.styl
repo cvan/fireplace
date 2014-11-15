@@ -184,14 +184,11 @@ spinner(type = '') {
 // Flex Box (trim me!)
 
 display-flex() {
-    display: -ms-box;
-    display: -moz-box;
-    display: -webkit-box;
-    display: flex;
-    display: -ms-flex;
-    display: -ms-flexbox;
-    display: -moz-flex;
-    display: -webkit-flex;
+    display: -webkit-box;   /* iOS 6-, Safari 3.1-6 */
+    display: -moz-box;      /* Firefox 2-21 */
+    display: -ms-flexbox;   /* IE 10+ */
+    display: -webkit-flex;  /* Chrome 4-20 */
+    display: flex;          /* Chrome 21+, Firefox 20+, Opera 12.1 */
 }
 
 flex-stack() {
@@ -232,7 +229,7 @@ flex-vertical-center() {
 
     // new way
     align-items: center;
-    display: flex;
+    // display: flex;
     justify-content: center;
 }
 

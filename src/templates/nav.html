@@ -12,15 +12,13 @@
 
 {# Navigation tabs (Home, New, Popular, Categories). #}
 {# Uses body[data-page-type] to set active styles on the navigation tabs. #}
-<ul class="navbar nav-mkt{% if not is_settings %} active{% endif %}
-           {{ 'has-recommendations' if logged_in and recommendations }}">
+<ul class="navbar nav-mkt{{ ' active' if not is_settings }}">
   {# Tab name must match route name. #}
   {{ navtab('homepage', _('Home'), url('homepage')) }}
   {{ navtab('new', _('New'), url('new')) }}
   {{ navtab('popular', _('Popular'), url('popular')) }}
-  {% if logged_in and recommendations %}
-    {{ navtab('recommended', _('Recommended'), url('recommended')) }}
-  {% endif %}
+  {# TODO: Hide "Recommended" with CSS. #}
+  {{ navtab('recommended', _('Recommended'), url('recommended')) }}
   <li class="tab-item tab-categories appear-on-hover--parent{{ ' initial-active' if path == url('categories') }}"
       data-tab="categories">
     <a class="tab-link mobile-cat-link" href="{{ url('categories') }}">{{ _('Categories') }}</a>
