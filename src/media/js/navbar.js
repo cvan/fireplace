@@ -10,66 +10,74 @@ define('navbar',
     var NAV_SETTINGS_BASE_OFFSET = 0;
     var NAV_LINK_VISIBLE_WIDTH = 50;
 
-    function initNavbarButtons() {
-        // Navbar settings + Marketplace buttons.
+    // Navbar settings + Marketplace buttons.
+    function toggleNavbar($on, $off) {
+        $on.addClass('active');
+        $off.removeClass('active');
+    }
+
+    function fitNavbarOnSwitch($navbar, $item) {
+        // Switching between navbars makes it difficult to do initial
+        // line-fitting since the navbar is in a transitioning state. So
+        // we listen for `transitionend` event - except for navbars that
+        // have already been fitted.
+        if ($navbar.data('fitted')) {
+            return;
+        }
+
+        function traysListener(e) {
+            fitNavbarMobile($item);
+            // Remove listener so `fitNavbarMobile` gets called only once.
+            $trays.off('transitionend', traysListener);
+        }
+
+        var $trays = $('.act-tray.active, .mkt-tray.active');
+        $trays.on('transitionend', traysListener);
+    }
+
+    // Toggle between Settings page and Marketplace pages.
+    z.body.on('click', '.act-tray-mobile .icon', function(e) {
+        // Activate Settings page navbar.
+        e.preventDefault();
+
+        var $mktNav = $('.nav-mkt');
+        var $settingsNavGroup = $('.nav-settings').add('.mkt-tray');
+        var $mktNavGroup = $mktNav.add('.act-tray-mobile');
+
+        $mktNav.css('right', '');  // Reset the offset for transition effect.
+        toggleNavbar($settingsNavGroup, $mktNavGroup);
+
+        var $firstLink = $settingsNavGroup.find('[data-tab]:first-child a');
+        z.page.trigger('navigate', $firstLink.attr('href'));
+
+        fitNavbarOnSwitch($firstLink.closest('.navbar'),
+                          $firstLink.closest('li'));
+    })
+    .on('click', '.mkt-tray .icon', function(e) {
+        // Activate Marketplace pages navbar.
+        e.preventDefault();
+
         var $mktNav = $('.nav-mkt');
         var $settingsNav = $('.nav-settings');
-        var $mktNavGroup = $mktNav.add('.act-tray-mobile');
         var $settingsNavGroup = $settingsNav.add('.mkt-tray');
+        var $mktNavGroup = $mktNav.add('.act-tray-mobile');
 
-        function toggleNavbar($on, $off) {
-            $on.addClass('active');
-            $off.removeClass('active');
-        }
+        $settingsNav.css('right', '');  // Reset the offset for transition effect.
+        toggleNavbar($mktNavGroup, $settingsNavGroup);
 
-        function fitNavbarOnSwitch($navbar, $item) {
-            // Switching between navbars makes it difficult to do initial
-            // line-fitting since the navbar is in a transitioning state. So
-            // we do a timeout. But for navbars that have already been fitted,
-            // don't do a timeout delay.
-            var waitForTransition = 500;
-            if ($navbar.data('fitted')) {
-                waitForTransition = 0;
-            }
+        var $firstLink = $mktNavGroup.find('[data-tab]:first-child a');
+        z.page.trigger('navigate', $firstLink.attr('href'));
 
-            setTimeout(function() {
-                fitNavbarMobile($item);
-            }, waitForTransition);
-        }
-
-        // Toggle between Settings page and Marketplace pages.
-        z.body.on('click', '.act-tray-mobile', function(e) {
-            // Activate Settings page navbar.
-            e.preventDefault();
-            $mktNav.css('right', '');  // Reset the offset for transition effect.
-            toggleNavbar($settingsNavGroup, $mktNavGroup);
-
-            var $firstLink = $settingsNavGroup.find('[data-tab]:first-child a');
-            z.page.trigger('navigate', $firstLink.attr('href'));
-
-            fitNavbarOnSwitch($firstLink.closest('.navbar'),
-                              $firstLink.closest('li'));
-        })
-        .on('click', '.mkt-tray', function(e) {
-            // Activate Marketplace pages navbar.
-            e.preventDefault();
-            $('.nav-settings').css('right', '');  // Reset the offset for transition effect.
-            toggleNavbar($mktNavGroup, $settingsNavGroup);
-
-            var $firstLink = $mktNavGroup.find('[data-tab]:first-child a');
-            z.page.trigger('navigate', $firstLink.attr('href'));
-
-            fitNavbarOnSwitch($firstLink.closest('.navbar'),
-                              $firstLink.closest('li'));
-        })
-        .on('click', '.site a', function() {
-            // Activate Marketplace pages navbar.
-            toggleNavbar($mktNavGroup, $settingsNavGroup);
-        });
-    }
-    z.body.one('loaded', initNavbarButtons);
-
-    z.body.on('click', '.navbar li > a', function() {
+        fitNavbarOnSwitch($firstLink.closest('.navbar'),
+                          $firstLink.closest('li'));
+    })
+    .on('click', '.site a', function() {
+        // Activate Marketplace pages navbar.
+        var $settingsNavGroup = $('.nav-settings').add('.mkt-tray');
+        var $mktNavGroup = $('.nav-mkt').add('.act-tray-mobile');
+        toggleNavbar($mktNavGroup, $settingsNavGroup);
+    })
+    .on('click', '.navbar li > a', function() {
         var $this = $(this);
         if ($this.hasClass('desktop-cat-link')) {
             // Don't allow click of category tab on desktop.
@@ -264,8 +272,6 @@ define('navbar',
         $('.hovercats').html(
             nunjucks.env.render('cat_overlay.html', {categories: cats})
         );
-
-        initNavbarButtons();
     }
 
     // Render navbar.
